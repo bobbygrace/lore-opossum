@@ -93,6 +93,11 @@
           return _this.$(".js-copy-to-clipboard").removeClass("hidden");
         };
       })(this));
+      this.clipboardClient.on("aftercopy", (function(_this) {
+        return function(e) {
+          return alert("Copied!");
+        };
+      })(this));
       return this;
     };
 
