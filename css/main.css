@@ -79,30 +79,43 @@ textarea {
 }
 
 /* ==========================================================================
-   Browser Upgrade Prompt
-   ========================================================================== */
-
-.browserupgrade {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
-
-/* ==========================================================================
    Author's custom styles
    ========================================================================== */
 
+/* Typography */
+
+h1 {
+  font-size: 1.25rem;
+}
+
+h2 {
+  font-size: 1.15rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+h4, h5, h6 {
+  font-size: 1rem;
+}
+
+
+/* Layout */
+
 .app {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 50em;
   padding: 2em 2em;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .content {
-  float: left;
-  width: 500px;
+  display: inline-block;
   margin: 0 2em 2em 0;
+  text-align: left;
+  width: 35em;
+  vertical-align: top;
 }
 
   .content p:first-child {
@@ -110,9 +123,11 @@ textarea {
   }
 
 .meta {
-  float: left;
+  display: inline-block;
   margin-bottom: 2em;
-  width: 250px;
+  width: 12em;
+  text-align: left;
+  vertical-align: top;
 }
 
   .meta-control {
