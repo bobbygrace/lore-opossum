@@ -95,7 +95,12 @@
       })(this));
       this.clipboardClient.on("aftercopy", (function(_this) {
         return function(e) {
-          return alert("Copied!");
+          var originalText;
+          originalText = _this.$(".js-copy-to-clipboard")[0].innerText;
+          _this.$(".js-copy-to-clipboard")[0].innerText = "Copied!";
+          return setTimeout(function() {
+            return _this.$(".js-copy-to-clipboard")[0].innerText = originalText;
+          }, 1000);
         };
       })(this));
       return this;

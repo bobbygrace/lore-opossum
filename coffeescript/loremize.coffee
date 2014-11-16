@@ -93,7 +93,11 @@ class LoremView extends Backbone.View
       @$(".js-copy-to-clipboard").removeClass("hidden")
 
     @clipboardClient.on "aftercopy", (e) =>
-      alert("Copied!")
+      originalText = @$(".js-copy-to-clipboard")[0].innerText
+      @$(".js-copy-to-clipboard")[0].innerText = "Copied!"
+      setTimeout =>
+        @$(".js-copy-to-clipboard")[0].innerText = originalText
+      , 1000
 
     @
 
