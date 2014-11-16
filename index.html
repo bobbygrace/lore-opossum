@@ -15,50 +15,52 @@
   </head>
   <body>
 
-    <div class="js-app">
+    <div class="app js-app">
 
-      <div class="js-render-ipsum">
+      <div class="content js-render-ipsum">
       </div>
 
-      <div>
+      <div class="meta">
 
-        <div>
-          <h2>Type</h2>
-          <ul class="js-list-types js-select-type">
+        <div class="meta-control">
+          <h2 class="meta-control-header">Type</h2>
+          <ul class="meta-control-options js-list-types js-select-type">
           </ul>
         </div>
 
-        <div>
-          <h2>Paragraphs</h2>
-          <ul class="js-select-paragraphs">
+        <div class="meta-control">
+          <h2 class="meta-control-header">Paragraphs</h2>
+          <ul class="meta-control-options js-select-paragraphs">
             <li><a href="#" data-paragraphs="1">1</a></li>
             <li><a href="#" data-paragraphs="2">2</a></li>
             <li><a href="#" data-paragraphs="3">3</a></li>
             <li><a href="#" data-paragraphs="4">4</a></li>
             <li><a href="#" data-paragraphs="5">5</a></li>
             <li><a href="#" data-paragraphs="6">6</a></li>
-            <li><a href="#" data-paragraphs="7">7</a></li>
-            <li><a href="#" data-paragraphs="8">8</a></li>
           </ul>
         </div>
 
-        <div>
-          <h2>Format</h2>
-          <ul class="js-select-format">
+        <div class="meta-control">
+          <h2 class="meta-control-header">Format</h2>
+          <ul class="meta-control-options js-select-format">
             <li><a href="#" data-format="text">Text</a></li>
             <li><a href="#" data-format="html">HTML</a></li>
             <li><a href="#" data-format="json">JSON</a></li>
           </ul>
         </div>
 
+        <a class="button" href="#">Copy to Clipboard</a>
+
+        <hr>
+
+        <div class="meta-footer">
+          <p>Made by <a href="http://bobbygrace.info">Bobby Grace</a>.</p>
+          <p><a href="http://en.wikipedia.org/wiki/Lorem_ipsum">What is Lorem Ipsum?</a></p>
+        </div>
+
       </div>
 
     </div>
-
-    <footer>
-      <p>Made by <a href="http://bobbygrace.info">Bobby Grace</a></p>
-      <p><a href="http://en.wikipedia.org/wiki/Lorem_ipsum">What is Lorem Ipsum?</a></p>
-    </footer>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>

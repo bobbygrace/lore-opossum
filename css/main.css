@@ -93,19 +93,46 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2em 2em;
+}
 
+.content {
+  float: left;
+  width: 500px;
+  margin: 0 2em 2em 0;
+}
 
+  .content p:first-child {
+    margin-top: 0;
+  }
 
+.meta {
+  float: left;
+  margin-bottom: 2em;
+  width: 250px;
+}
 
+  .meta-control {
+  }
 
+    .meta-control-header {
+      margin-top: 0;
+    }
 
+    .meta-control-options {
+      margin: 0 0 2em;
+      padding-left: 0;
+      list-style: none;
+    }
 
+      .meta-control-options-item {
+      }
 
-
-
-
-
-
+  .meta-footer {
+  }
 
 
 
