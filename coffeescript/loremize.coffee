@@ -1,3 +1,5 @@
+ZeroClipboard.config( { swfPath: "bower_components/zeroclipboard/dist/ZeroClipboard.swf" } )
+
 window.terms =
   "Trello": [
     "card"
@@ -40,7 +42,7 @@ window.terms =
   ]
 
 window.templates =
-  "ipsumText": "{{#paragraphs}}<p>{{.}}</p>{{/paragraphs}}"
+  "ipsumText": "{{#paragraphs}}<p>{{.}}</p><br>{{/paragraphs}}"
   "ipsumJSON": "{{json}}"
   "optionType": "<li><a href='#' data-type='{{term}}'>{{term}}</a></li>"
 
@@ -71,6 +73,7 @@ class LoremView extends Backbone.View
     "click .js-select-type a": "selectType"
     "click .js-select-paragraphs a": "selectNumParagraphs"
     "click .js-select-format a": "selectFormat"
+    "click .js-copy-to-clipbard": "copyToClipboard"
 
   render: ->
     @setElement $(".js-app") # :(
@@ -80,6 +83,14 @@ class LoremView extends Backbone.View
     @renderFormat()
 
     @renderIpsum()
+
+    @clipboardClient = new ZeroClipboard(@$(".js-copy-to-clipboard"))
+
+    @clipboardClient.on "error", (e) =>
+      @$(".js-copy-to-clipboard").addClass("hidden")
+
+    @clipboardClient.on "ready", (e) =>
+      @$(".js-copy-to-clipboard").removeClass("hidden")
 
     @
 
@@ -153,5 +164,6 @@ class LoremView extends Backbone.View
     value = $(e.target).attr("data-format")
     @model.setFormat(value)
     false
+
 
 new LoremView({model: new LoremModel})

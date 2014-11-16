@@ -4,6 +4,10 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  ZeroClipboard.config({
+    swfPath: "bower_components/zeroclipboard/dist/ZeroClipboard.swf"
+  });
+
   window.terms = {
     "Trello": ["card", "board", "at a glance", "Trello", "Taco", "lists", "list of lists", "checklists", "Chorizo", "Pete", "Trello Gold", "Business Class", "visual", "free", "attachment", "drag and drop", "members", "organization"],
     "Hodor": ["hodor", "hodor", "hodor", "hodor", "hodor", "hodor", "HODOR", "Hodor"],
@@ -11,7 +15,7 @@
   };
 
   window.templates = {
-    "ipsumText": "{{#paragraphs}}<p>{{.}}</p>{{/paragraphs}}",
+    "ipsumText": "{{#paragraphs}}<p>{{.}}</p><br>{{/paragraphs}}",
     "ipsumJSON": "{{json}}",
     "optionType": "<li><a href='#' data-type='{{term}}'>{{term}}</a></li>"
   };
@@ -68,7 +72,8 @@
     LoremView.prototype.events = {
       "click .js-select-type a": "selectType",
       "click .js-select-paragraphs a": "selectNumParagraphs",
-      "click .js-select-format a": "selectFormat"
+      "click .js-select-format a": "selectFormat",
+      "click .js-copy-to-clipbard": "copyToClipboard"
     };
 
     LoremView.prototype.render = function() {
@@ -77,6 +82,17 @@
       this.renderNumParagraphs();
       this.renderFormat();
       this.renderIpsum();
+      this.clipboardClient = new ZeroClipboard(this.$(".js-copy-to-clipboard"));
+      this.clipboardClient.on("error", (function(_this) {
+        return function(e) {
+          return _this.$(".js-copy-to-clipboard").addClass("hidden");
+        };
+      })(this));
+      this.clipboardClient.on("ready", (function(_this) {
+        return function(e) {
+          return _this.$(".js-copy-to-clipboard").removeClass("hidden");
+        };
+      })(this));
       return this;
     };
 

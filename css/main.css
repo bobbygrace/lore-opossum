@@ -118,6 +118,13 @@ h4, h5, h6 {
   vertical-align: top;
 }
 
+  /* ZeroClipboard’s copy doesn’t apply do new lines so good, so
+  we add some br’s but just hide them. */
+  .content br {
+    display: none;
+    margin: 0;
+  }
+
   .content p:first-child {
     margin-top: 0;
   }
@@ -145,6 +152,12 @@ h4, h5, h6 {
 
       .meta-control-options-item {
       }
+
+  /* Special classes for ZeroClipboard’s flash element */
+
+  .zeroclipboard-is-hover,
+  .zeroclipboard-is-active {
+  }
 
   .meta-footer {
   }
