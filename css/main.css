@@ -146,7 +146,7 @@ a {
   font-family: "ff-tisa-web-pro", serif;
   margin: 0 3rem 2rem 0;
   text-align: left;
-  width: 35rem;
+  max-width: 35rem;
   vertical-align: top;
 }
 
@@ -181,7 +181,7 @@ a {
       padding-left: 0;
       list-style: none;
     }
-  
+
       .meta-control-options-item {
         background: hsl(120, 20%, 95%);
         border-radius: 4px;
@@ -219,15 +219,22 @@ a {
         margin: 0 .3rem .4rem 0;
       }
 
-  /* Special classes for ZeroClipboard’s flash element */
-
-  .zeroclipboard-is-hover,
-  .zeroclipboard-is-active {
+  .meta-button {
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: block;
+    margin: 0 0 .4rem 0;
+    padding: .3rem .6rem;
   }
 
-  .meta-footer {
-  }
+    /* Special classes for ZeroClipboard’s flash element */
+    .meta-button.zeroclipboard-is-hover {
+      background: hsl(120, 20%, 95%);
+    }
 
+    .meta-button.zeroclipboard-is-active {
+      background: hsl(120, 10%, 90%);
+    }
 
 
 /* ==========================================================================
