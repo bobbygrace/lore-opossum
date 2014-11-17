@@ -41,7 +41,7 @@ hr {
     height: 1px;
     border: 0;
     border-top: 1px solid #ccc;
-    margin: 1em 0;
+    margin: 2em 0;
     padding: 0;
 }
 
@@ -83,13 +83,15 @@ textarea {
    ========================================================================== */
 
 /* Typography */
+/* http://modularscale.com/scale/?px1=16&px2=&ra1=1.25 */
+
 
 h1 {
-  font-size: 1.25rem;
+  font-size: 1.56rem;
 }
 
 h2 {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
 }
 
 h3 {
@@ -100,21 +102,26 @@ h4, h5, h6 {
   font-size: 1rem;
 }
 
+small {
+  font-size: .8rem;
+}
+
 
 /* Layout */
 
 .app {
   max-width: 50em;
-  padding: 2em 2em;
+  padding: 3rem 2rem;
   text-align: center;
   margin: 0 auto;
 }
 
 .content {
   display: inline-block;
-  margin: 0 2em 2em 0;
+  font-size: 1.25rem;
+  margin: 0 2rem 2rem 0;
   text-align: left;
-  width: 35em;
+  width: 36rem;
   vertical-align: top;
 }
 
@@ -132,7 +139,7 @@ h4, h5, h6 {
 .meta {
   display: inline-block;
   margin-bottom: 2em;
-  width: 12em;
+  width: 11rem;
   text-align: left;
   vertical-align: top;
 }
