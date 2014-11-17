@@ -61,6 +61,9 @@ class LoremView extends Backbone.View
         @$(".js-copy-to-clipboard")[0].innerText = originalText
       , 2000
 
+    _.defer =>
+      @$el.removeClass("hidden")
+
     @
 
   renderTypes: ->

@@ -100,6 +100,11 @@
           }, 2000);
         };
       })(this));
+      _.defer((function(_this) {
+        return function() {
+          return _this.$el.removeClass("hidden");
+        };
+      })(this));
       return this;
     };
 
