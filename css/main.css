@@ -183,7 +183,7 @@ a {
     }
 
       .meta-control-options-item {
-        background: hsl(120, 20%, 95%);
+        background-color: hsl(120, 20%, 95%);
         border-radius: 4px;
         box-sizing: border-box;
         display: block;
@@ -191,20 +191,22 @@ a {
         padding: .3rem .6rem;
         box-shadow: 0 1px 0 hsla(0, 0%, 0%, .2);
         text-decoration: none;
+        -webkit-transition: background-color .1s;
+        transition: background-color .1s;
       }
 
         .meta-control-options-item:hover {
-          background: hsl(120, 10%, 90%);
+          background-color: hsl(120, 10%, 92%);
         }
 
         .meta-control-options-item:active {
-          background: hsl(120, 10%, 85%);
+          background-color: hsl(120, 10%, 89%);
         }
 
       .meta-control-options-item--is-current,
       .meta-control-options-item--is-current:hover,
       .meta-control-options-item--is-current:active {
-        background: hsl(120, 40%, 85%);
+        background-color: hsl(120, 40%, 85%);
         cursor: default;
       }
 
@@ -226,11 +228,13 @@ a {
     margin: 0 0 .4rem 0;
     padding: .3rem .6rem;
     text-align: center;
+    -webkit-transition: background-color .1s;
+    transition: background-color .1s;
   }
 
     /* Special classes for ZeroClipboard’s flash element */
     .meta-button.zeroclipboard-is-hover {
-      background: hsl(120, 20%, 95%);
+      background-color: hsl(120, 20%, 95%);
     }
 
     .meta-button.zeroclipboard-is-active {
