@@ -129,7 +129,7 @@
 
     LoremView.prototype.renderNumParagraphs = function() {
       var $paragraphs, currentNumParagraphs, data, html, p, paragraphsRange, template, _i, _len;
-      paragraphsRange = [1, 2, 3, 4, 5, 6];
+      paragraphsRange = [1, 2, 3, 4, 5, 6, 7, 8];
       $paragraphs = this.$(".js-list-paragraphs");
       template = templates.optionParagraphs;
       currentNumParagraphs = Number(this.model.get("paragraphs"));
@@ -231,7 +231,7 @@
 
     LoremView.prototype.generateParagraph = function() {
       var length, lengthRange, paragraph, s;
-      lengthRange = [4, 5, 6, 7, 8, 9, 10];
+      lengthRange = [4, 5, 6, 7, 8];
       length = _.sample(lengthRange);
       return paragraph = ((function() {
         var _i, _results;

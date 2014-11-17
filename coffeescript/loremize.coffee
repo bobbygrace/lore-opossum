@@ -82,7 +82,7 @@ class LoremView extends Backbone.View
     @
 
   renderNumParagraphs: ->
-    paragraphsRange = [1..6]
+    paragraphsRange = [1..8]
     $paragraphs = @$(".js-list-paragraphs")
     template = templates.optionParagraphs
     currentNumParagraphs = Number @model.get("paragraphs")
@@ -150,7 +150,7 @@ class LoremView extends Backbone.View
 
   generateParagraph: ->
     # The paragraph should be somehwere between 4 and 10 sentences.
-    lengthRange = [4..10]
+    lengthRange = [4..8]
     length = _.sample lengthRange
     paragraph = (@generateSentence() for s in [0..length]).join(" ")
 
