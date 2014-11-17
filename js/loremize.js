@@ -28,11 +28,18 @@
     }
 
     LoremModel.prototype.defaults = function() {
+      var ls, _ref, _ref1, _ref2;
+      ls = JSON.parse(localStorage.getItem('settings'));
       return {
-        type: "Trello",
-        paragraphs: 3,
-        format: "text"
+        type: (_ref = ls != null ? ls["type"] : void 0) != null ? _ref : "Trello",
+        paragraphs: (_ref1 = ls != null ? ls["paragraphs"] : void 0) != null ? _ref1 : 3,
+        format: (_ref2 = ls != null ? ls["format"] : void 0) != null ? _ref2 : "text"
       };
+    };
+
+    LoremModel.prototype.set = function() {
+      LoremModel.__super__.set.apply(this, arguments);
+      return localStorage.setItem("settings", JSON.stringify(this.attributes));
     };
 
     LoremModel.prototype.setType = function(value) {

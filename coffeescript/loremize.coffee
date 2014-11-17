@@ -49,9 +49,16 @@ window.templates =
 
 class LoremModel extends Backbone.Model
   defaults: ->
-    type: "Trello"
-    paragraphs: 3
-    format: "text"
+    ls = JSON.parse localStorage.getItem('settings')
+    {
+      type: ls?["type"] ? "Trello"
+      paragraphs: ls?["paragraphs"] ? 3
+      format: ls?["format"] ? "text"
+    }
+
+  set: ->
+    super
+    localStorage.setItem("settings", JSON.stringify(@attributes))
 
   setType: (value) ->
     @set({type: value})
