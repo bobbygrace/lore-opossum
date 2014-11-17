@@ -1,4 +1,4 @@
-window.terms =
+window.types =
   "Trello": [
     "card"
     "board"

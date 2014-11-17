@@ -1,18 +1,12 @@
 ZeroClipboard.config( { swfPath: "bower_components/zeroclipboard/dist/ZeroClipboard.swf" } )
 
-window.templates =
-  "ipsumText": "{{#paragraphs}}<p>{{.}}</p><br>{{/paragraphs}}"
-  "ipsumJSON": "{{json}}"
-  "optionType": "<li><a href='#' data-type='{{term}}'>{{term}}</a></li>"
-
-
 class LoremModel extends Backbone.Model
   defaults: ->
     ls = JSON.parse localStorage.getItem('settings')
     {
       type: ls?["type"] ? "Trello"
       paragraphs: ls?["paragraphs"] ? 3
-      format: ls?["format"] ? "text"
+      format: ls?["format"] ? "Text"
     }
 
   set: ->
@@ -30,25 +24,27 @@ class LoremModel extends Backbone.Model
 
 
 class LoremView extends Backbone.View
-
-  initialize: ->
-    @listenTo @model, "change", @renderIpsum
-    @render()
-
   events:
     "click .js-select-type a": "selectType"
     "click .js-select-paragraphs a": "selectNumParagraphs"
     "click .js-select-format a": "selectFormat"
     "click .js-copy-to-clipbard": "copyToClipboard"
 
+  initialize: ->
+    @listenTo @model, "change", @renderIpsum
+    @listenTo @model, "change:type", @renderTypes
+    @listenTo @model, "change:paragraphs", @renderNumParagraphs
+    @listenTo @model, "change:format", @renderFormats
+
   render: ->
     @setElement $(".js-app") # :(
 
     @renderTypes()
     @renderNumParagraphs()
-    @renderFormat()
-
+    @renderFormats()
     @renderIpsum()
+
+    # ZeroClipboard stuff
 
     @clipboardClient = new ZeroClipboard(@$(".js-copy-to-clipboard"))
 
@@ -68,15 +64,50 @@ class LoremView extends Backbone.View
     @
 
   renderTypes: ->
-    $types = $(".js-list-types")
+    $types = @$(".js-list-types")
     template = templates.optionType
-    $types.html (Mustache.render(template, {term}) for term of terms)
+    currentType = @model.get("type")
+    html = ''
+
+    for type of types
+      data = { type }
+      if type == currentType
+        data.isCurrent = true
+      html += Mustache.render(template, data)
+
+    $types.html html
     @
 
   renderNumParagraphs: ->
+    paragraphsRange = [1..8]
+    $paragraphs = @$(".js-list-paragraphs")
+    template = templates.optionParagraphs
+    currentNumParagraphs = Number @model.get("paragraphs")
+    html = ''
+
+    for p in paragraphsRange
+      data = { num: p }
+      if p == currentNumParagraphs
+        data.isCurrent = true
+      html += Mustache.render(template, data)
+
+    $paragraphs.html html
     @
 
-  renderFormat: ->
+  renderFormats: ->
+    formats = ["Text", "HTML", "JSON"]
+    $formats = @$(".js-list-formats")
+    template = templates.optionFormat
+    currentFormat = @model.get("format")
+    html = ''
+
+    for format in formats
+      data = { format }
+      if format == currentFormat
+        data.isCurrent = true
+      html += Mustache.render(template, data)
+
+    $formats.html html
     @
 
   renderIpsum: ->
@@ -86,12 +117,12 @@ class LoremView extends Backbone.View
 
     switch format
 
-      when "html"
+      when "HTML"
         paragraphs = for p in [1..numParagraphs]
           "<p>#{@generateParagraph()}</p>"
         $ipsum.html Mustache.render(templates.ipsumText, {paragraphs})
 
-      when "json"
+      when "JSON"
         paragraphs = for p in [1..numParagraphs]
           "\"#{@generateParagraph()}\""
         string = paragraphs.join(",")
@@ -109,7 +140,7 @@ class LoremView extends Backbone.View
     lengthRange = [6..10]
     length = _.sample lengthRange
     type = @model.get("type")
-    wordArray = _.sample terms[type], length
+    wordArray = _.sample types[type], length
     rawSentence = wordArray.join(" ")
     # Uppercase first letter and add a period.
     sentence = rawSentence.charAt(0).toUpperCase() + rawSentence.slice(1) + "."
@@ -139,4 +170,4 @@ class LoremView extends Backbone.View
     false
 
 
-new LoremView({model: new LoremModel})
+new LoremView({model: new LoremModel}).render()

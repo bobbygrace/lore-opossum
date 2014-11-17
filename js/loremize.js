@@ -8,12 +8,6 @@
     swfPath: "bower_components/zeroclipboard/dist/ZeroClipboard.swf"
   });
 
-  window.templates = {
-    "ipsumText": "{{#paragraphs}}<p>{{.}}</p><br>{{/paragraphs}}",
-    "ipsumJSON": "{{json}}",
-    "optionType": "<li><a href='#' data-type='{{term}}'>{{term}}</a></li>"
-  };
-
   LoremModel = (function(_super) {
     __extends(LoremModel, _super);
 
@@ -27,7 +21,7 @@
       return {
         type: (_ref = ls != null ? ls["type"] : void 0) != null ? _ref : "Trello",
         paragraphs: (_ref1 = ls != null ? ls["paragraphs"] : void 0) != null ? _ref1 : 3,
-        format: (_ref2 = ls != null ? ls["format"] : void 0) != null ? _ref2 : "text"
+        format: (_ref2 = ls != null ? ls["format"] : void 0) != null ? _ref2 : "Text"
       };
     };
 
@@ -65,11 +59,6 @@
       return LoremView.__super__.constructor.apply(this, arguments);
     }
 
-    LoremView.prototype.initialize = function() {
-      this.listenTo(this.model, "change", this.renderIpsum);
-      return this.render();
-    };
-
     LoremView.prototype.events = {
       "click .js-select-type a": "selectType",
       "click .js-select-paragraphs a": "selectNumParagraphs",
@@ -77,11 +66,18 @@
       "click .js-copy-to-clipbard": "copyToClipboard"
     };
 
+    LoremView.prototype.initialize = function() {
+      this.listenTo(this.model, "change", this.renderIpsum);
+      this.listenTo(this.model, "change:type", this.renderTypes);
+      this.listenTo(this.model, "change:paragraphs", this.renderNumParagraphs);
+      return this.listenTo(this.model, "change:format", this.renderFormats);
+    };
+
     LoremView.prototype.render = function() {
       this.setElement($(".js-app"));
       this.renderTypes();
       this.renderNumParagraphs();
-      this.renderFormat();
+      this.renderFormats();
       this.renderIpsum();
       this.clipboardClient = new ZeroClipboard(this.$(".js-copy-to-clipboard"));
       this.clipboardClient.on("error", (function(_this) {
@@ -108,27 +104,63 @@
     };
 
     LoremView.prototype.renderTypes = function() {
-      var $types, template, term;
-      $types = $(".js-list-types");
+      var $types, currentType, data, html, template, type;
+      $types = this.$(".js-list-types");
       template = templates.optionType;
-      $types.html((function() {
-        var _results;
-        _results = [];
-        for (term in terms) {
-          _results.push(Mustache.render(template, {
-            term: term
-          }));
+      currentType = this.model.get("type");
+      html = '';
+      for (type in types) {
+        data = {
+          type: type
+        };
+        if (type === currentType) {
+          data.isCurrent = true;
         }
-        return _results;
-      })());
+        html += Mustache.render(template, data);
+      }
+      $types.html(html);
       return this;
     };
 
     LoremView.prototype.renderNumParagraphs = function() {
+      var $paragraphs, currentNumParagraphs, data, html, p, paragraphsRange, template, _i, _len;
+      paragraphsRange = [1, 2, 3, 4, 5, 6, 7, 8];
+      $paragraphs = this.$(".js-list-paragraphs");
+      template = templates.optionParagraphs;
+      currentNumParagraphs = Number(this.model.get("paragraphs"));
+      html = '';
+      for (_i = 0, _len = paragraphsRange.length; _i < _len; _i++) {
+        p = paragraphsRange[_i];
+        data = {
+          num: p
+        };
+        if (p === currentNumParagraphs) {
+          data.isCurrent = true;
+        }
+        html += Mustache.render(template, data);
+      }
+      $paragraphs.html(html);
       return this;
     };
 
-    LoremView.prototype.renderFormat = function() {
+    LoremView.prototype.renderFormats = function() {
+      var $formats, currentFormat, data, format, formats, html, template, _i, _len;
+      formats = ["Text", "HTML", "JSON"];
+      $formats = this.$(".js-list-formats");
+      template = templates.optionFormat;
+      currentFormat = this.model.get("format");
+      html = '';
+      for (_i = 0, _len = formats.length; _i < _len; _i++) {
+        format = formats[_i];
+        data = {
+          format: format
+        };
+        if (format === currentFormat) {
+          data.isCurrent = true;
+        }
+        html += Mustache.render(template, data);
+      }
+      $formats.html(html);
       return this;
     };
 
@@ -138,7 +170,7 @@
       format = this.model.get("format");
       numParagraphs = this.model.get("paragraphs");
       switch (format) {
-        case "html":
+        case "HTML":
           paragraphs = (function() {
             var _i, _results;
             _results = [];
@@ -151,7 +183,7 @@
             paragraphs: paragraphs
           }));
           break;
-        case "json":
+        case "JSON":
           paragraphs = (function() {
             var _i, _results;
             _results = [];
@@ -187,7 +219,7 @@
       lengthRange = [6, 7, 8, 9, 10];
       length = _.sample(lengthRange);
       type = this.model.get("type");
-      wordArray = _.sample(terms[type], length);
+      wordArray = _.sample(types[type], length);
       rawSentence = wordArray.join(" ");
       return sentence = rawSentence.charAt(0).toUpperCase() + rawSentence.slice(1) + ".";
     };
@@ -236,6 +268,6 @@
 
   new LoremView({
     model: new LoremModel
-  });
+  }).render();
 
 }).call(this);
