@@ -129,7 +129,7 @@
 
     LoremView.prototype.renderNumParagraphs = function() {
       var $paragraphs, currentNumParagraphs, data, html, p, paragraphsRange, template, _i, _len;
-      paragraphsRange = [1, 2, 3, 4, 5, 6, 7, 8];
+      paragraphsRange = [1, 2, 3, 4, 5, 6];
       $paragraphs = this.$(".js-list-paragraphs");
       template = templates.optionParagraphs;
       currentNumParagraphs = Number(this.model.get("paragraphs"));

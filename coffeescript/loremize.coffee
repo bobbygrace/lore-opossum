@@ -82,7 +82,7 @@ class LoremView extends Backbone.View
     @
 
   renderNumParagraphs: ->
-    paragraphsRange = [1..8]
+    paragraphsRange = [1..6]
     $paragraphs = @$(".js-list-paragraphs")
     template = templates.optionParagraphs
     currentNumParagraphs = Number @model.get("paragraphs")

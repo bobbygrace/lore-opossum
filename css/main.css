@@ -82,9 +82,13 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+
 /* Typography */
 /* http://modularscale.com/scale/?px1=16&px2=&ra1=1.25 */
 
+body {
+  font-family: "ff-tisa-sans-web-pro", sans-serif;
+}
 
 h1 {
   font-size: 1.56rem;
@@ -106,6 +110,26 @@ small {
   font-size: .8rem;
 }
 
+a {
+  color: hsl(0, 0%, 20%);
+}
+
+  a:hover {
+    color: hsl(120, 50%, 0%);
+  }
+
+.quiet {
+  color: hsl(0, 0%, 55%);
+}
+
+  .quiet a {
+    color: hsl(0, 0%, 55%);
+  }
+
+  .quiet a:hover {
+    color: hsl(0, 0%, 20%);
+  }
+
 
 /* Layout */
 
@@ -119,9 +143,10 @@ small {
 .content {
   display: inline-block;
   font-size: 1.25rem;
-  margin: 0 2rem 2rem 0;
+  font-family: "ff-tisa-web-pro", serif;
+  margin: 0 3rem 2rem 0;
   text-align: left;
-  width: 36rem;
+  width: 35rem;
   vertical-align: top;
 }
 
@@ -148,7 +173,7 @@ small {
   }
 
     .meta-control-header {
-      margin-top: 0;
+      margin: 0 0 0.4rem;
     }
 
     .meta-control-options {
@@ -156,8 +181,42 @@ small {
       padding-left: 0;
       list-style: none;
     }
-
+  
       .meta-control-options-item {
+        background: hsl(120, 20%, 95%);
+        border-radius: 4px;
+        box-sizing: border-box;
+        display: block;
+        margin: 0 0 .4rem 0;
+        padding: .3rem .6rem;
+        box-shadow: 0 1px 0 hsla(0, 0%, 0%, .2);
+        text-decoration: none;
+      }
+
+        .meta-control-options-item:hover {
+          background: hsl(120, 10%, 90%);
+        }
+
+        .meta-control-options-item:active {
+          background: hsl(120, 10%, 85%);
+        }
+
+      .meta-control-options-item--is-current,
+      .meta-control-options-item--is-current:hover,
+      .meta-control-options-item--is-current:active {
+        background: hsl(120, 40%, 85%);
+        cursor: default;
+      }
+
+    .meta-control-options--compact li {
+      text-align: center;
+      display: inline-block;
+      width: 33%;
+      margin: 0;
+    }
+
+      .meta-control-options--compact .meta-control-options-item {
+        margin: 0 .3rem .4rem 0;
       }
 
   /* Special classes for ZeroClipboard’s flash element */
