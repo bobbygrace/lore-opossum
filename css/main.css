@@ -225,6 +225,7 @@ a {
     display: block;
     margin: 0 0 .4rem 0;
     padding: .3rem .6rem;
+    text-align: center;
   }
 
     /* Special classes for ZeroClipboard’s flash element */
@@ -236,6 +237,9 @@ a {
       background: hsl(120, 10%, 90%);
     }
 
+  .meta-footer {
+    text-align: center;
+  }
 
 /* ==========================================================================
    Helper classes
