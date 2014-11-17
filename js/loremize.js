@@ -8,12 +8,6 @@
     swfPath: "bower_components/zeroclipboard/dist/ZeroClipboard.swf"
   });
 
-  window.terms = {
-    "Trello": ["card", "board", "at a glance", "Trello", "Taco", "lists", "list of lists", "checklists", "Chorizo", "Pete", "Trello Gold", "Business Class", "visual", "free", "attachment", "drag and drop", "members", "organization"],
-    "Hodor": ["hodor", "hodor", "hodor", "hodor", "hodor", "hodor", "HODOR", "Hodor"],
-    "Escape": ["<p>", "<B>YESIR</B>", "<script>alert('good times')</script>", "</p>", "</html>", "Hey", "<img src='/' width='500' height='300'>"]
-  };
-
   window.templates = {
     "ipsumText": "{{#paragraphs}}<p>{{.}}</p><br>{{/paragraphs}}",
     "ipsumJSON": "{{json}}",
@@ -107,7 +101,7 @@
           _this.$(".js-copy-to-clipboard")[0].innerText = "Copied!";
           return setTimeout(function() {
             return _this.$(".js-copy-to-clipboard")[0].innerText = originalText;
-          }, 1000);
+          }, 2000);
         };
       })(this));
       return this;
