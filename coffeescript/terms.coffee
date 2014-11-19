@@ -253,7 +253,7 @@ window.types =
     "HODOR"
     "Hodor"
   ]
-  "Escape": [
+  "HaXxoR": [
     "<p>"
     "<B>haxorz</B>"
     "<script>alert('1337')</script>"
