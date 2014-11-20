@@ -1,0 +1,23 @@
+{
+  "name": "multi-ipsum",
+  "version": "0.0.1",
+  "description": "Multi Ipsum is a content first lorem ipsum generator with many flavors.",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify  -t coffeeify coffeescript/app.coffee -o js/bundle.js --debug -v",
+    "build": "browserify -t coffeeify coffeescript/app.coffee | uglifyjs > js/bundle.js"
+  },
+  "author": "Bobby Grace",
+  "license": "MIT",
+  "dependencies": {
+    "backbone": "~1.1.2",
+    "zeroclipboard": "~2.1.6",
+    "underscore": "~1.7.0",
+    "browserify": "~6.3.2",
+    "coffeeify": "~1.0.0",
+    "watchify": "~2.1.1",
+    "zeptojs": "~1.1.4",
+    "uglify-js": "~2.4.15",
+    "mustache": "~0.8.2"
+  }
+}
