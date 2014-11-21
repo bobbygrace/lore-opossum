@@ -1,4 +1,4 @@
-window.types =
+types =
   "Lorem Ipsum": [
     'lorem'
     'ipsum'
@@ -261,3 +261,5 @@ window.types =
     "</html>"
     "<img src='/' width='500' height='300'>"
   ]
+
+module.exports = types

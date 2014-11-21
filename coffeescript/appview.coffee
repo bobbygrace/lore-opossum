@@ -4,31 +4,10 @@ Backbone        = require 'backbone'
 Backbone.$      = $
 zeroclipboard   = require 'zeroclipboard'
 mustache        = require 'mustache'
+templates       = require './templates.coffee'
+types           = require './terms.coffee'
 
 zeroclipboard.config( { swfPath: "bower_components/zeroclipboard/dist/ZeroClipboard.swf" } )
-
-class LoremModel extends Backbone.Model
-  defaults: ->
-    ls = JSON.parse localStorage.getItem('settings')
-    {
-      type: ls?["type"] ? "Trello"
-      paragraphs: ls?["paragraphs"] ? 3
-      format: ls?["format"] ? "Text"
-    }
-
-  set: ->
-    super
-    localStorage.setItem("settings", JSON.stringify(@attributes))
-
-  setType: (value) ->
-    @set({type: value})
-
-  setParagraphs: (value) ->
-    @set({paragraphs: value})
-
-  setFormat: (value) ->
-    @set({format: value})
-
 
 class AppView extends Backbone.View
   events:
@@ -179,5 +158,4 @@ class AppView extends Backbone.View
     @model.setFormat(value)
     false
 
-
-new AppView({model: new LoremModel}).render()
+module.exports = AppView
