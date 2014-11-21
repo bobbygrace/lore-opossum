@@ -7,7 +7,7 @@ mustache        = require 'mustache'
 templates       = require './templates.coffee'
 types           = require './terms.coffee'
 
-zeroclipboard.config( { swfPath: "bower_components/zeroclipboard/dist/ZeroClipboard.swf" } )
+zeroclipboard.config( { swfPath: "swf/ZeroClipboard.swf" } )
 
 class AppView extends Backbone.View
   events:
