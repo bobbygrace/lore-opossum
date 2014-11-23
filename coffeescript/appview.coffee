@@ -5,27 +5,27 @@ Backbone.$      = $
 zeroclipboard   = require 'zeroclipboard'
 mustache        = require 'mustache'
 templates       = require './templates.coffee'
-types           = require './terms.coffee'
+flavors         = require './flavors.coffee'
 
 zeroclipboard.config( { swfPath: "swf/ZeroClipboard.swf" } )
 
 class AppView extends Backbone.View
   events:
-    "click .js-select-type a": "selectType"
+    "click .js-select-flavor a": "selectFlavor"
     "click .js-select-paragraphs a": "selectNumParagraphs"
     "click .js-select-format a": "selectFormat"
     "click .js-copy-to-clipbard": "copyToClipboard"
 
   initialize: ->
     @listenTo @model, "change", @renderIpsum
-    @listenTo @model, "change:type", @renderTypes
+    @listenTo @model, "change:flavor", @renderFlavors
     @listenTo @model, "change:paragraphs", @renderNumParagraphs
     @listenTo @model, "change:format", @renderFormats
 
   render: ->
     @setElement $(".js-app") # :(
 
-    @renderTypes()
+    @renderFlavors()
     @renderNumParagraphs()
     @renderFormats()
     @renderIpsum()
@@ -52,19 +52,19 @@ class AppView extends Backbone.View
 
     @
 
-  renderTypes: ->
-    $types = @$(".js-list-types")
-    template = templates.optionType
-    currentType = @model.get("type")
+  renderFlavors: ->
+    $flavors = @$(".js-list-flavors")
+    template = templates.optionFlavor
+    currentFlavor = @model.get("flavor")
     html = ''
 
-    for type of types
-      data = { type }
-      if type == currentType
+    for flavor of flavors
+      data = { flavor }
+      if flavor == currentFlavor
         data.isCurrent = true
       html += mustache.render(template, data)
 
-    $types.html html
+    $flavors.html html
     @
 
   renderNumParagraphs: ->
@@ -128,8 +128,8 @@ class AppView extends Backbone.View
     # The sentence should be somehwere between 6 and 10 words or phrases
     lengthRange = [6..10]
     length = _.sample lengthRange
-    type = @model.get("type")
-    wordArray = _.sample types[type], length
+    flavor = @model.get("flavor")
+    wordArray = _.sample flavors[flavor], length
     rawSentence = wordArray.join(" ")
     # Uppercase first letter and add a period.
     sentence = rawSentence.charAt(0).toUpperCase() + rawSentence.slice(1) + "."
@@ -140,10 +140,10 @@ class AppView extends Backbone.View
     length = _.sample lengthRange
     paragraph = (@generateSentence() for s in [0..length]).join(" ")
 
-  selectType: (e) ->
+  selectFlavor: (e) ->
     e.preventDefault()
-    value = $(e.target).attr("data-type")
-    @model.setType(value)
+    value = $(e.target).attr("data-flavor")
+    @model.setFlavor(value)
     false
 
   selectNumParagraphs: (e) ->

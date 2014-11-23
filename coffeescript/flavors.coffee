@@ -1,4 +1,4 @@
-types =
+flavors =
   "Lorem Ipsum": [
     'lorem'
     'ipsum'
@@ -159,31 +159,39 @@ types =
   "Trello": [
     "card"
     "board"
+    "lists"
+    "list of lists"
     "at a glance"
     "Trello"
     "Taco"
-    "lists"
-    "list of lists"
     "checklists"
     "Chorizo"
-    "Pete"
     "Trello Gold"
     "Business Class"
     "visual"
     "free"
     "attachment"
     "drag and drop"
+    "due dates"
     "members"
     "organization"
     "list"
     "with anyone"
     "anything"
+    "team"
+    "family and friends"
     "label"
+    "flexible"
+    "project"
+    "real time"
+    "simple"
+    "power-ups"
     "comment"
     "notifications"
     "done"
     "easy"
     "organize"
+    "stickers"
   ]
   "Skate": [
     "Tony Hawk"
@@ -253,7 +261,21 @@ types =
     "HODOR"
     "Hodor"
   ]
-  "HaXxoR": [
+  "Redacted": [
+    "█"
+    "█"
+    "██"
+    "██"
+    "██"
+    "███"
+    "████"
+    "████"
+    "████"
+    "█████"
+    "██████"
+    "████████"
+  ]
+  "HaXsSoR": [
     "<p>"
     "<B>haxorz</B>"
     "<script>alert('1337')</script>"
@@ -262,4 +284,4 @@ types =
     "<img src='/' width='500' height='300'>"
   ]
 
-module.exports = types
+module.exports = flavors

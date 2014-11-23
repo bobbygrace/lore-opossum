@@ -4,7 +4,7 @@ class LoremModel extends Backbone.Model
   defaults: ->
     ls = JSON.parse localStorage.getItem('settings')
     {
-      type: ls?["type"] ? "Trello"
+      flavor: ls?["flavor"] ? "Lorem Ipsum"
       paragraphs: ls?["paragraphs"] ? 3
       format: ls?["format"] ? "Text"
     }
@@ -13,8 +13,8 @@ class LoremModel extends Backbone.Model
     super
     localStorage.setItem("settings", JSON.stringify(@attributes))
 
-  setType: (value) ->
-    @set({type: value})
+  setFlavor: (value) ->
+    @set({flavor: value})
 
   setParagraphs: (value) ->
     @set({paragraphs: value})
