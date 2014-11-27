@@ -9,7 +9,7 @@ There are a lot of entertaining lorem ipsum generators out there, but they all s
 - Select the number of paragraphs you want.
 - Ask if you want to begin with “Lorem ipsum dolar init…” or equivalent.
 
-Sometimes there are other options up front, like if I want <p> tags included. I don’t know about you, but I find this super annoying. Just give me my goofy text and let me tweak things later if needed.
+Sometimes there are other options up front, like if I want `<p>` tags included. I don’t know about you, but I find this super annoying. Just give me my goofy text and let me tweak things later if needed.
 
 There are other annoyances with generators: tiny font sizes, ads, swag, no easy way to copy to a clipboard, and mobile-unfriendly layouts. Some of these generators have a grotesque number of features. Chrome extensions. jQuery plugins. Wordpress plugins. APIs. Mobile apps. There is a pleasant Rube Goldberg quality to these features, but I find them wildly overwrought for the most part. Is it really faster than copying and pasting text?
 
