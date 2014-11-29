@@ -6,6 +6,7 @@ zeroclipboard   = require 'zeroclipboard'
 mustache        = require 'mustache'
 templates       = require './templates.coffee'
 flavors         = require './flavors.coffee'
+{ render, p, br, text, li, ul, a } = require 'teacup'
 
 zeroclipboard.config( { swfPath: "swf/ZeroClipboard.swf" } )
 
@@ -74,9 +75,9 @@ class AppView extends Backbone.View
     currentNumParagraphs = Number @model.get("paragraphs")
     html = ''
 
-    for p in paragraphsRange
-      data = { num: p }
-      if p == currentNumParagraphs
+    for para in paragraphsRange
+      data = { num: para }
+      if para == currentNumParagraphs
         data.isCurrent = true
       html += mustache.render(template, data)
 
@@ -103,24 +104,32 @@ class AppView extends Backbone.View
     $ipsum = $(".js-render-ipsum")
     format = @model.get("format")
     numParagraphs = @model.get("paragraphs")
+    paragraphs = (@generateParagraph() for para in [1..numParagraphs])
 
     switch format
 
       when "HTML"
-        paragraphs = for p in [1..numParagraphs]
-          "<p>#{@generateParagraph()}</p>"
-        $ipsum.html mustache.render(templates.ipsumText, {paragraphs})
+        html = render ->
+          for para in paragraphs
+            p "<p>#{para}</p>"
+            br
 
       when "JSON"
-        paragraphs = for p in [1..numParagraphs]
-          "\"#{@generateParagraph()}\""
-        string = paragraphs.join(",")
-        json = "[#{string}]"
-        $ipsum.html mustache.render(templates.ipsumJSON, {json})
+        paragraphs = ("\"#{para}\"" for para in paragraphs)
+        joinedParagraphs = paragraphs.join(",")
+
+        html = render ->
+          text "["
+          text joinedParagraphs
+          text "]"
 
       else # "Text", the default
-        paragraphs = (@generateParagraph() for p in [1..numParagraphs])
-        $ipsum.html mustache.render(templates.ipsumText, {paragraphs})
+        html = render ->
+          for para in paragraphs
+            p para
+            br
+
+    $ipsum.html html
 
     @
 
