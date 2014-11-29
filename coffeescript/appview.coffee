@@ -3,8 +3,6 @@ _               = require 'underscore'
 Backbone        = require 'backbone'
 Backbone.$      = $
 zeroclipboard   = require 'zeroclipboard'
-mustache        = require 'mustache'
-templates       = require './templates.coffee'
 flavors         = require './flavors.coffee'
 { render, p, br, text, li, ul, a } = require 'teacup'
 
@@ -54,50 +52,77 @@ class AppView extends Backbone.View
     @
 
   renderFlavors: ->
-    $flavors = @$(".js-list-flavors")
-    template = templates.optionFlavor
-    currentFlavor = @model.get("flavor")
-    html = ''
+    selectedFlavor = @model.get("flavor")
 
-    for flavor of flavors
-      data = { flavor }
-      if flavor == currentFlavor
-        data.isCurrent = true
-      html += mustache.render(template, data)
+    getAttrs = (flavor) ->
+      classes = "meta-control-options-item"
+      if flavor == selectedFlavor
+        classes += " meta-control-options-item--is-current"
 
-    $flavors.html html
+      return {
+        "href": "#"
+        "data-flavor": flavor
+        "class": classes
+      }
+
+    html = render ->
+      for flavor of flavors
+        li ->
+          a getAttrs(flavor), ->
+            text flavor
+
+    @$(".js-list-flavors").html html
+
     @
 
   renderNumParagraphs: ->
     paragraphsRange = [1..8]
-    $paragraphs = @$(".js-list-paragraphs")
-    template = templates.optionParagraphs
-    currentNumParagraphs = Number @model.get("paragraphs")
-    html = ''
+    selectedNumParagraphs = Number @model.get("paragraphs")
 
-    for para in paragraphsRange
-      data = { num: para }
-      if para == currentNumParagraphs
-        data.isCurrent = true
-      html += mustache.render(template, data)
+    getAttrs = (numPara) ->
+      classes = "meta-control-options-item"
+      if numPara == selectedNumParagraphs
+        classes += " meta-control-options-item--is-current"
 
-    $paragraphs.html html
+      return {
+        "href": "#"
+        "data-paragraphs": numPara
+        "class": classes
+      }
+
+    html = render ->
+      for numPara in paragraphsRange
+        li ->
+          a getAttrs(numPara), ->
+            text numPara
+
+    @$(".js-list-paragraphs").html html
+
     @
 
   renderFormats: ->
     formats = ["Text", "HTML", "JSON"]
-    $formats = @$(".js-list-formats")
-    template = templates.optionFormat
-    currentFormat = @model.get("format")
-    html = ''
+    selectedFormat = @model.get("format")
 
-    for format in formats
-      data = { format }
-      if format == currentFormat
-        data.isCurrent = true
-      html += mustache.render(template, data)
+    getAttrs = (format) ->
+      classes = "meta-control-options-item"
+      if format == selectedFormat
+        classes += " meta-control-options-item--is-current"
 
-    $formats.html html
+      return {
+        "href": "#"
+        "data-format": format
+        "class": classes
+      }
+
+    html = render ->
+      for format in formats
+        li ->
+          a getAttrs(format), ->
+            text format
+
+    @$(".js-list-formats").html html
+
     @
 
   renderIpsum: ->
