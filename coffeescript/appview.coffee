@@ -4,6 +4,7 @@ Backbone        = require 'backbone'
 Backbone.$      = $
 zeroclipboard   = require 'zeroclipboard'
 flavors         = require './flavors.coffee'
+Combokeys       = require 'combokeys'
 { render, p, br, text, li, ul, a } = require 'teacup'
 
 zeroclipboard.config( { swfPath: "swf/ZeroClipboard.swf" } )
@@ -48,6 +49,17 @@ class AppView extends Backbone.View
 
     _.defer =>
       @$el.removeClass("hidden")
+
+    combokeys = new Combokeys(document)
+
+    combokeys.bind "1", => @model.setParagraphs("1")
+    combokeys.bind "2", => @model.setParagraphs("2")
+    combokeys.bind "3", => @model.setParagraphs("3")
+    combokeys.bind "4", => @model.setParagraphs("4")
+    combokeys.bind "5", => @model.setParagraphs("5")
+    combokeys.bind "6", => @model.setParagraphs("6")
+    combokeys.bind "7", => @model.setParagraphs("7")
+    combokeys.bind "8", => @model.setParagraphs("8")
 
     @
 
