@@ -140,6 +140,9 @@ a {
   margin: 0 auto;
 }
 
+
+/* Main Column */
+
 .content {
   display: inline-block;
   font-size: 1.25rem;
@@ -150,16 +153,12 @@ a {
   vertical-align: top;
 }
 
-  /* ZeroClipboard’s copy doesn’t apply do new lines so good, so
-  we add some br’s but just hide them. */
-  .content br {
-    display: none;
-    margin: 0;
-  }
-
   .content p:first-child {
     margin-top: 0;
   }
+
+
+/* Sidebar */
 
 .meta {
   display: inline-block;
@@ -191,7 +190,7 @@ a {
         box-sizing: border-box;
         display: block;
         margin: 0 0 .4rem 0;
-        padding: .3rem .6rem;
+        padding: .4rem .6rem;
         box-shadow: 0 1px 0 hsla(0, 0%, 0%, .2);
         text-decoration: none;
         -webkit-transition: background-color .1s;
@@ -229,13 +228,15 @@ a {
     box-sizing: border-box;
     display: block;
     margin: 0 0 .4rem 0;
-    padding: .3rem .6rem;
+    padding: .4rem .6rem;
     text-align: center;
     -webkit-transition: background-color .1s;
     transition: background-color .1s;
   }
 
     /* Special classes for ZeroClipboard’s flash element */
+
+    .meta-button--is-focus,
     .meta-button.zeroclipboard-is-hover {
       background-color: hsl(120, 20%, 95%);
     }

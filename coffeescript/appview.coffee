@@ -17,6 +17,7 @@ class AppView extends Backbone.View
     "click .js-select-flavor a": "selectFlavor"
     "click .js-select-paragraphs a": "selectNumParagraphs"
     "click .js-select-format a": "selectFormat"
+    "click .js-copy-to-clipboard": "cancel"
 
   initialize: ->
     @loremClipboard = new LoremClipboard()
@@ -226,10 +227,16 @@ class AppView extends Backbone.View
     false
 
   flashCopiedState: ->
-    originalText = @$(".js-copy-to-clipboard")[0].innerText
-    @$(".js-copy-to-clipboard")[0].innerText = "Copied!"
+    $copyBtn = @$(".js-copy-to-clipboard")
+    originalText = $copyBtn.text()
+    $copyBtn.text "Copied!"
     setTimeout =>
-      @$(".js-copy-to-clipboard")[0].innerText = originalText
+      $copyBtn.text originalText
     , 2000
+
+  cancel: (e) ->
+    e.preventDefault()
+    false
+
 
 module.exports = AppView

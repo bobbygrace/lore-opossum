@@ -16,6 +16,19 @@ class LoremClipboard
       if !@value || !(e.ctrlKey || e.metaKey)
         return
 
+      # dum copy pasta non-DRY way to do AppView::flashCopiedState
+      if e.keyCode == 67
+        $copyBtn = $(".js-copy-to-clipboard")
+        originalText = $copyBtn.text()
+        $copyBtn
+        .text "Copied!"
+        .addClass("meta-button--is-focus")
+        setTimeout =>
+          $copyBtn
+          .text originalText
+          .removeClass("meta-button--is-focus")
+        , 2000
+
       elem = $(e.target)
       if elem.is("input,textarea")
         if isVisibleInput(elem)
@@ -32,14 +45,16 @@ class LoremClipboard
       _.defer =>
         $clipboardContainer = $(".js-lorem-clipboard")
         $clipboardContainer.empty().show()
-        $clipboardInput = $("<textarea class='lorem-clipboard-input js-lorem-clipboard-input'></textarea>")
+        @$clipboardInput = $("<textarea class='lorem-clipboard-input js-lorem-clipboard-input'></textarea>")
         .val(@value)
         .appendTo($clipboardContainer)
         .focus()
         # no select() in zepto. ¯\_(ツ)_/¯
-        $clipboardInput[0].select()
+        @$clipboardInput[0].select()
+
 
     $(document).keyup (e) ->
+
       if $(e.target).is(".js-lorem-clipboard-input")
         $(".js-lorem-clipboard").empty().hide()
 
