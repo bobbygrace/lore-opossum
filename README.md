@@ -21,7 +21,7 @@ So I made my own generator. I’m aware that this is just another generator in t
 - Has easily visible controls to the side that let you tweak with a single click.
 - Has multiple flavors, including traditional “Lorem Ipsum” and “Trello”, “Skate”, “Hodor”, “Redacted”, and “HaXsSoR”.
 - Remembers your settings the next time you come back or refresh.
-- Has a “Copy to Clipboard” button.
+- Has a “Copy to Clipboard” button that copies in very plain, non-rich text. “Cmd+C” also works.
 
 Why did I choose those particular flavors? “Lorem Ipsum” should be obvious. The [Trello](https://trello.com) ipsum is something I’ll use for mockups and is the closest thing you are going to get to an ad. HaXsSoR might help you find [XSS](http://en.wikipedia.org/wiki/Cross-site_scripting) vulnerabilities. You can use “Redacted” if you _really_ don’t care about the text. “Skate” and “Hodor” are just funny to me.
 
@@ -29,9 +29,6 @@ If you were looking for an API, I’m sorry, but I won’t be making one and als
 
 # TODO
 
-- Shortcuts!
- - 1-8 for number of paragraphs
- - “Cmd + C” for quick copy
 - A real favicon.
 - More mobile-friendly UI.
 - Add this explainer to the page.
