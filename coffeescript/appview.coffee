@@ -5,18 +5,21 @@ Backbone.$      = $
 zeroclipboard   = require 'zeroclipboard'
 flavors         = require './flavors.coffee'
 Combokeys       = require 'combokeys'
-{ render, p, br, text, li, ul, a } = require 'teacup'
+LoremClipboard  = require './clipboard.coffee'
+
+{ render, p, raw, br, text, li, ul, a } = require 'teacup'
 
 zeroclipboard.config( { swfPath: "swf/ZeroClipboard.swf" } )
 
 class AppView extends Backbone.View
+
   events:
     "click .js-select-flavor a": "selectFlavor"
     "click .js-select-paragraphs a": "selectNumParagraphs"
     "click .js-select-format a": "selectFormat"
-    "click .js-copy-to-clipbard": "copyToClipboard"
 
   initialize: ->
+    @loremClipboard = new LoremClipboard()
     @listenTo @model, "change", @renderIpsum
     @listenTo @model, "change:flavor", @renderFlavors
     @listenTo @model, "change:paragraphs", @renderNumParagraphs
@@ -30,25 +33,30 @@ class AppView extends Backbone.View
     @renderFormats()
     @renderIpsum()
 
+
     # ZeroClipboard stuff
 
-    @clipboardClient = new zeroclipboard(@$(".js-copy-to-clipboard"))
+    @zeroClipboardClient = new zeroclipboard(@$(".js-copy-to-clipboard"))
 
-    @clipboardClient.on "error", (e) =>
+    @zeroClipboardClient.on "error", (e) =>
       @$(".js-copy-to-clipboard").addClass("hidden")
 
-    @clipboardClient.on "ready", (e) =>
+    @zeroClipboardClient.on "ready", (e) =>
       @$(".js-copy-to-clipboard").removeClass("hidden")
 
-    @clipboardClient.on "aftercopy", (e) =>
-      originalText = @$(".js-copy-to-clipboard")[0].innerText
-      @$(".js-copy-to-clipboard")[0].innerText = "Copied!"
-      setTimeout =>
-        @$(".js-copy-to-clipboard")[0].innerText = originalText
-      , 2000
+    @zeroClipboardClient.on "copy", (e) =>
+      clipboard = e.clipboardData
+      clipboard.setData("text/plain", @loremClipboard.value)
+
+    @zeroClipboardClient.on "aftercopy", =>
+      @flashCopiedState()
+
 
     _.defer =>
       @$el.removeClass("hidden")
+
+
+    # Shortcuts c/o Combokeys
 
     combokeys = new Combokeys(document)
 
@@ -149,7 +157,10 @@ class AppView extends Backbone.View
         html = render ->
           for para in paragraphs
             p "<p>#{para}</p>"
-            br
+
+        clipboard = render ->
+          for para in paragraphs
+            raw "<p>#{para}</p>\n\n"
 
       when "JSON"
         paragraphs = ("\"#{para}\"" for para in paragraphs)
@@ -157,16 +168,26 @@ class AppView extends Backbone.View
 
         html = render ->
           text "["
-          text joinedParagraphs
+          text paragraphs
+          text "]"
+
+        clipboard = render ->
+          text "["
+          raw paragraphs
           text "]"
 
       else # "Text", the default
         html = render ->
           for para in paragraphs
             p para
-            br
+
+        clipboard = render ->
+          for para in paragraphs
+            raw "#{para}\n\n"
 
     $ipsum.html html
+
+    @loremClipboard.set clipboard
 
     @
 
@@ -203,5 +224,12 @@ class AppView extends Backbone.View
     value = $(e.target).attr("data-format")
     @model.setFormat(value)
     false
+
+  flashCopiedState: ->
+    originalText = @$(".js-copy-to-clipboard")[0].innerText
+    @$(".js-copy-to-clipboard")[0].innerText = "Copied!"
+    setTimeout =>
+      @$(".js-copy-to-clipboard")[0].innerText = originalText
+    , 2000
 
 module.exports = AppView
