@@ -1,7 +1,7 @@
 {
-  "name": "multi-ipsum",
+  "name": "Lore Opossum",
   "version": "0.0.1",
-  "description": "Multi Ipsum is a content first lorem ipsum generator with many flavors.",
+  "description": "Lore Opossum is a content first lorem ipsum generator with many flavors.",
   "main": "index.coffee",
   "scripts": {
     "watch": "watchify  -t coffeeify index.coffee -o js/bundle.js --debug -v",
