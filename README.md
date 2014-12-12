@@ -31,4 +31,6 @@ If you were looking for an API, I’m sorry, but I won’t be making one and als
 
 - A real favicon.
 - Controls for mobile
+- Store show shortcut hints in localstorage
+- Drop underline for "or use cmd+c" and make button more obvious.
 - Add this explainer to the page.
