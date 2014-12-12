@@ -30,5 +30,5 @@ If you were looking for an API, I’m sorry, but I won’t be making one and als
 # TODO
 
 - A real favicon.
-- More mobile-friendly UI.
+- Controls for mobile
 - Add this explainer to the page.

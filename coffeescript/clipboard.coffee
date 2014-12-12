@@ -19,13 +19,13 @@ class LoremClipboard
       # dum copy pasta non-DRY way to do AppView::flashCopiedState
       if e.keyCode == 67
         $copyBtn = $(".js-copy-to-clipboard")
-        originalText = $copyBtn.text()
+        originalHtml = $copyBtn.html()
         $copyBtn
         .text "Copied!"
         .addClass("meta-button--is-focus")
         setTimeout =>
           $copyBtn
-          .text originalText
+          .html originalHtml
           .removeClass("meta-button--is-focus")
         , 2000
 

@@ -20,6 +20,7 @@ class AppView extends Backbone.View
     "click .js-copy-to-clipboard": "cancel"
 
   initialize: ->
+    @fShowHints = false
     @loremClipboard = new LoremClipboard()
     @listenTo @model, "change", @renderIpsum
     @listenTo @model, "change:flavor", @renderFlavors
@@ -52,6 +53,8 @@ class AppView extends Backbone.View
     @zeroClipboardClient.on "aftercopy", =>
       @flashCopiedState()
 
+    if !/Mac|iPod|iPhone|iPad/.test(navigator.platform)
+      @$(".js-meta-key-type").text 'Ctrl'
 
     _.defer =>
       @$el.removeClass("hidden")
@@ -60,6 +63,8 @@ class AppView extends Backbone.View
     # Shortcuts c/o Combokeys
 
     combokeys = new Combokeys(document)
+
+    combokeys.bind "?", => @toggleKeyboardHints()
 
     combokeys.bind "1", => @model.setParagraphs("1")
     combokeys.bind "2", => @model.setParagraphs("2")
@@ -70,15 +75,19 @@ class AppView extends Backbone.View
     combokeys.bind "7", => @model.setParagraphs("7")
     combokeys.bind "8", => @model.setParagraphs("8")
 
+    combokeys.bind "t", => @model.setFormat("Text")
+    combokeys.bind "h", => @model.setFormat("HTML")
+    combokeys.bind "j", => @model.setFormat("JSON")
+
     @
 
   renderFlavors: ->
     selectedFlavor = @model.get("flavor")
 
     getAttrs = (flavor) ->
-      classes = "meta-control-options-item"
+      classes = "meta-control-options-item-link"
       if flavor == selectedFlavor
-        classes += " meta-control-options-item--is-current"
+        classes += " meta-control-options-item-link--is-current"
 
       return {
         "href": "#"
@@ -88,7 +97,7 @@ class AppView extends Backbone.View
 
     html = render ->
       for flavor of flavors
-        li ->
+        li '.meta-control-options-item', ->
           a getAttrs(flavor), ->
             text flavor
 
@@ -101,9 +110,9 @@ class AppView extends Backbone.View
     selectedNumParagraphs = Number @model.get("paragraphs")
 
     getAttrs = (numPara) ->
-      classes = "meta-control-options-item"
+      classes = "meta-control-options-item-link"
       if numPara == selectedNumParagraphs
-        classes += " meta-control-options-item--is-current"
+        classes += " meta-control-options-item-link--is-current"
 
       return {
         "href": "#"
@@ -113,7 +122,7 @@ class AppView extends Backbone.View
 
     html = render ->
       for numPara in paragraphsRange
-        li ->
+        li '.meta-control-options-item', ->
           a getAttrs(numPara), ->
             text numPara
 
@@ -126,9 +135,9 @@ class AppView extends Backbone.View
     selectedFormat = @model.get("format")
 
     getAttrs = (format) ->
-      classes = "meta-control-options-item"
+      classes = "meta-control-options-item-link"
       if format == selectedFormat
-        classes += " meta-control-options-item--is-current"
+        classes += " meta-control-options-item-link--is-current"
 
       return {
         "href": "#"
@@ -138,7 +147,7 @@ class AppView extends Backbone.View
 
     html = render ->
       for format in formats
-        li ->
+        li '.meta-control-options-item', ->
           a getAttrs(format), ->
             text format
 
@@ -226,12 +235,17 @@ class AppView extends Backbone.View
     @model.setFormat(value)
     false
 
+  toggleKeyboardHints: ->
+    @$(".meta-control").toggleClass("meta-control--is-show-hints", !@fShowHints)
+    @fShowHints = !@fShowHints
+    return
+
   flashCopiedState: ->
     $copyBtn = @$(".js-copy-to-clipboard")
-    originalText = $copyBtn.text()
+    originalText = $copyBtn.html()
     $copyBtn.text "Copied!"
     setTimeout =>
-      $copyBtn.text originalText
+      $copyBtn.html originalText
     , 2000
 
   cancel: (e) ->
