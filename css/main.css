@@ -106,6 +106,7 @@ h4, h5, h6 {
   font-size: 1rem;
 }
 
+.small,
 small {
   font-size: .8rem;
 }
@@ -206,25 +207,34 @@ a {
           margin: 0;
           padding: .4rem .7rem;
           box-shadow: 0 1px 0 hsla(0, 0%, 0%, .2);
+          outline: none;
           text-decoration: none;
           -webkit-transition: background-color .1s;
           transition: background-color .1s;
         }
 
-          .meta-control-options-item-link:hover {
-            background-color: hsl(120, 0%, 92%);
+          .meta-control-options-item-link:hover,
+          .meta-control-options-item-link:focus {
+            background-color: hsl(120, 15%, 90%);
+            box-shadow: 0 1px 0 hsla(0, 0%, 0%, .25);
           }
 
           .meta-control-options-item-link:active {
-            background-color: hsl(120, 0%, 89%);
+            background-color: hsl(120, 20%, 86%);
           }
 
         .meta-control-options-item-link--is-current,
         .meta-control-options-item-link--is-current:hover,
         .meta-control-options-item-link--is-current:active {
           background-color: hsl(120, 40%, 85%);
+          box-shadow: 0 1px 0 hsl(120, 40%, 55%);
           cursor: default;
         }
+
+          .meta-control-options-item-link--is-current:focus {
+            background-color: hsl(120, 40%, 90%);
+            box-shadow: 0 1px 0 hsl(120, 40%, 65%);
+          }
 
 
     /* Individual Controls */
@@ -270,10 +280,13 @@ a {
   /* Copy Button */
 
   .meta-button {
+    background-color: hsl(0, 0%, 98%);
     border-radius: 4px;
     box-sizing: border-box;
     display: block;
     margin: 0 auto .4rem;
+    max-width: 300px;
+    outline: none;
     padding: .4rem .8rem;
     position: fixed;
     text-align: center;
@@ -281,8 +294,11 @@ a {
     right: 2em;
     -webkit-transition: background-color .1s;
     transition: background-color .1s;
-    max-width: 300px;
   }
+
+    .meta-button-meta {
+      text-decoration: none;
+    }
 
     /* Special classes for ZeroClipboard’s flash element */
 
