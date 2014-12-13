@@ -157,7 +157,7 @@ a {
 
 .meta {
   background: linear-gradient(
-    transparent,
+    hsla(0, 0%, 100%, 0) 0%,
     hsla(0, 0%, 100%, 0.95) 15%,
     hsla(0, 0%, 100%, 1) 30%
   );
