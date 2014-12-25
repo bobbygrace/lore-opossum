@@ -435,6 +435,14 @@ a {
 
 }
 
+@media only screen and (max-height: 700px) {
+
+  html {
+    font-size: .9em;
+  }
+
+}
+
 @media print,
        (-o-min-device-pixel-ratio: 5/4),
        (-webkit-min-device-pixel-ratio: 1.25),
