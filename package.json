@@ -4,8 +4,8 @@
   "description": "Lore Opossum is a content first lorem ipsum generator with many flavors.",
   "main": "index.coffee",
   "scripts": {
-    "watch": "watchify  -t coffeeify index.coffee -o js/bundle.js --debug -v",
-    "build": "browserify -t coffeeify index.coffee | uglifyjs > js/bundle.js"
+    "watch": "watchify  -t coffeeify index.coffee -o public/js/bundle.js --debug -v",
+    "build": "browserify -t coffeeify index.coffee | uglifyjs > public/js/bundle.js"
   },
   "author": "Bobby Grace",
   "license": "MIT",
@@ -19,6 +19,9 @@
     "zeptojs": "~1.1.4",
     "uglify-js": "~2.4.15",
     "teacup": "~1.0.0",
-    "combokeys": "~2.0.0"
+    "combokeys": "~2.0.0",
+    "coffee-script": "~1.8.0",
+    "express": "~4.10.6",
+    "st": "~0.5.2"
   }
 }
