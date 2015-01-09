@@ -6,7 +6,6 @@ zeroclipboard   = require 'zeroclipboard'
 flavors         = require './flavors.coffee'
 Combokeys       = require 'combokeys'
 LoremClipboard  = require './clipboard.coffee'
-
 { render, p, raw, br, text, li, ul, a } = require 'teacup'
 
 zeroclipboard.config( { swfPath: "swf/ZeroClipboard.swf" } )
@@ -18,9 +17,12 @@ class AppView extends Backbone.View
     "click .js-select-paragraphs a": "selectNumParagraphs"
     "click .js-select-format a": "selectFormat"
     "click .js-copy-to-clipboard": "cancel"
+    "click .js-open-statement": "openStatement"
+    "click .js-close-statement": "closeStatement"
 
   initialize: ->
     @fShowHints = false
+    @fLoadedStatement = false
     @loremClipboard = new LoremClipboard()
     @listenTo @model, "change", @renderIpsum
     @listenTo @model, "change:flavor", @renderFlavors
@@ -78,6 +80,8 @@ class AppView extends Backbone.View
     combokeys.bind "t", => @model.setFormat("Text")
     combokeys.bind "h", => @model.setFormat("HTML")
     combokeys.bind "j", => @model.setFormat("JSON")
+
+    combokeys.bind "esc", => @closeStatement()
 
     @
 
@@ -247,6 +251,23 @@ class AppView extends Backbone.View
     setTimeout =>
       $copyBtn.html originalText
     , 2000
+
+  openStatement: (e) ->
+    e.preventDefault()
+
+    if !@fLoadedStatement
+      $.get "/statement.html", (data) =>
+        @fLoadedStatement = true
+        @$(".js-statement").html data
+
+    $("body").addClass("body--is-shown-statement")
+
+    false
+
+  closeStatement: (e) ->
+    e?.preventDefault()
+    $("body").removeClass("body--is-shown-statement")
+    false
 
   cancel: (e) ->
     e.preventDefault()

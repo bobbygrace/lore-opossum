@@ -20,7 +20,7 @@ gulp.task "css", ->
     .pipe gulp.dest("./public/css")
 
 
-gulpHtmlSrc = "./src/html/index.html"
+gulpHtmlSrc = "./src/html/*.html"
 
 gulp.task "html", ->
   options = {empty: true}

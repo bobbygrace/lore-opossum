@@ -308,7 +308,7 @@ a {
     }
 
     .meta-button.zeroclipboard-is-active {
-      background: hsl(120, 10%, 90%);
+      background-color: hsl(120, 10%, 90%);
     }
 
 
@@ -330,6 +330,65 @@ a {
     width: 1px;
     height: 1px;
     padding: 0px;
+  }
+
+
+/* Statement */
+
+.statement {
+  background: #fff;
+  display: none;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  overflow: auto;
+}
+
+  .statement-content {
+    font-family: "ff-tisa-web-pro", serif;
+    font-size: 1.25rem;
+    margin: 2em auto;
+    max-width: 35rem;
+    padding: 2rem;
+  }
+
+    .statement-content a {
+      color: hsl(120, 90%, 30%);
+    }
+
+      .statement-content a:hover {
+        color: hsl(120, 65%, 45%);
+      }
+
+  .statement-close {
+    color: hsl(0, 0%, 55%);
+    font-size: 2rem;
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    line-height: 50px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+    .statement-close:hover {
+      color: hsl(0, 0%, 30%);
+    }
+
+
+/* Show Statement */
+
+.body--is-shown-statement {
+  overflow: hidden;
+  height: 100%;
+}
+
+  .body--is-shown-statement .statement {
+    display: block;
   }
 
 
