@@ -6,10 +6,17 @@ port = config.get("port") ? 8080
 app = express()
 http = require("http").Server(app)
 
-mount = st
+mountOpts = {
   path: __dirname + "/public"
   url: "/"
   index: "index.html"
+}
+
+# don't use cache in dev mode
+if !config.get("use-cache")
+  mountOpts.cache = false
+
+mount = st mountOpts
 
 app.use(mount)
 
