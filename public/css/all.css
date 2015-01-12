@@ -511,6 +511,13 @@ textarea {
    ========================================================================== */
 
 
+/* Hide everything while loading */
+
+.wf-loading {
+  visibility: hidden;
+}
+
+
 /* Typography */
 /* http://modularscale.com/scale/?px1=16&px2=&ra1=1.25 */
 
