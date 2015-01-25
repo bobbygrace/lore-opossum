@@ -21,7 +21,6 @@ class AppView extends Backbone.View
     "click .js-close-statement": "closeStatement"
 
   initialize: ->
-    @fShowHints = false
     @fLoadedStatement = false
     @loremClipboard = new LoremClipboard()
     @listenTo @model, "change", @renderIpsum
@@ -66,8 +65,6 @@ class AppView extends Backbone.View
 
     combokeys = new Combokeys(document)
 
-    combokeys.bind "?", => @toggleKeyboardHints()
-
     combokeys.bind "1", => @model.setParagraphs("1")
     combokeys.bind "2", => @model.setParagraphs("2")
     combokeys.bind "3", => @model.setParagraphs("3")
@@ -91,7 +88,7 @@ class AppView extends Backbone.View
     getAttrs = (flavor) ->
       classes = "meta-control-options-item-link"
       if flavor == selectedFlavor
-        classes += " meta-control-options-item-link--is-current"
+        classes += " is-current"
 
       return {
         "href": "#"
@@ -116,7 +113,7 @@ class AppView extends Backbone.View
     getAttrs = (numPara) ->
       classes = "meta-control-options-item-link"
       if numPara == selectedNumParagraphs
-        classes += " meta-control-options-item-link--is-current"
+        classes += " is-current"
 
       return {
         "href": "#"
@@ -141,7 +138,7 @@ class AppView extends Backbone.View
     getAttrs = (format) ->
       classes = "meta-control-options-item-link"
       if format == selectedFormat
-        classes += " meta-control-options-item-link--is-current"
+        classes += " is-current"
 
       return {
         "href": "#"
@@ -239,11 +236,6 @@ class AppView extends Backbone.View
     @model.setFormat(value)
     false
 
-  toggleKeyboardHints: ->
-    @$(".meta-control").toggleClass("meta-control--is-show-hints", !@fShowHints)
-    @fShowHints = !@fShowHints
-    return
-
   flashCopiedState: ->
     $copyBtn = @$(".js-copy-to-clipboard")
     originalText = $copyBtn.html()
@@ -260,13 +252,13 @@ class AppView extends Backbone.View
         @fLoadedStatement = true
         @$(".js-statement").html data
 
-    $("body").addClass("body--is-shown-statement")
+    $("body").addClass("is-shown-statement")
 
     false
 
   closeStatement: (e) ->
     e?.preventDefault()
-    $("body").removeClass("body--is-shown-statement")
+    $("body").removeClass("is-shown-statement")
     false
 
   cancel: (e) ->

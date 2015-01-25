@@ -658,15 +658,15 @@ a {
             background-color: hsl(120, 20%, 86%);
           }
 
-        .meta-control-options-item-link--is-current,
-        .meta-control-options-item-link--is-current:hover,
-        .meta-control-options-item-link--is-current:active {
+        .meta-control-options-item-link.is-current,
+        .meta-control-options-item-link.is-current:hover,
+        .meta-control-options-item-link.is-current:active {
           background-color: hsl(120, 40%, 85%);
           box-shadow: 0 1px 0 hsl(120, 40%, 55%);
           cursor: default;
         }
 
-          .meta-control-options-item-link--is-current:focus {
+          .meta-control-options-item-link.is-current:focus {
             background-color: hsl(120, 40%, 90%);
             box-shadow: 0 1px 0 hsl(120, 40%, 65%);
           }
@@ -674,47 +674,35 @@ a {
 
     /* Individual Controls */
 
-    .meta-control--flavor {
+    .meta-control.mod-flavor {
       max-width: 390px;
     }
 
-      .meta-control--flavor .meta-control-options-item {
+      .meta-control.mod-flavor .meta-control-options-item {
         width: 33%;
       }
 
-    .meta-control--paragraphs {
+    .meta-control.mod-paragraphs {
       max-width: 190px;
     }
 
-      .meta-control--paragraphs .meta-control-options-item {
+      .meta-control.mod-paragraphs .meta-control-options-item {
         text-align: center;
         width: 25%;
       }
 
-    .meta-control--format {
+    .meta-control.mod-format {
       max-width: 150px;
     }
 
-      .meta-control--format .meta-control-options-item {
+      .meta-control.mod-format .meta-control-options-item {
         text-align: center;
         width: 50%;
       }
 
-    /* Show Keyboard Hints */
-
-    .meta-control--is-show-hints
-      .meta-control-options-item-link::first-letter {
-      box-shadow: 0px 1px 0 #000;
-    }
-
-      .meta-control--flavor.meta-control--is-show-hints
-        .meta-control-options-item-link::first-letter {
-        box-shadow: none;
-      }
-
   /* Copy Button */
 
-  .meta-button {
+  .copy-button {
     background-color: hsl(0, 0%, 98%);
     border-radius: 4px;
     box-sizing: border-box;
@@ -724,25 +712,31 @@ a {
     outline: none;
     padding: .4rem .8rem;
     position: fixed;
-    text-align: center;
-    top: 2em;
     right: 2em;
+    text-align: center;
+    text-decoration: none;
+    top: 2em;
     -webkit-transition: background-color .1s;
     transition: background-color .1s;
   }
 
-    .meta-button-meta {
-      text-decoration: none;
+    .copy-button-text {
+      text-decoration: underline;
+      display: block;
+    }
+
+    .copy-button-meta {
+      font-size: .9em;
     }
 
     /* Special classes for ZeroClipboard’s flash element */
 
-    .meta-button--is-focus,
-    .meta-button.zeroclipboard-is-hover {
+    .copy-button.is-focus,
+    .copy-button.zeroclipboard-is-hover {
       background-color: hsl(120, 20%, 95%);
     }
 
-    .meta-button.zeroclipboard-is-active {
+    .copy-button.zeroclipboard-is-active {
       background-color: hsl(120, 10%, 90%);
     }
 
@@ -817,12 +811,12 @@ a {
 
 /* Show Statement */
 
-.body--is-shown-statement {
+body.is-shown-statement {
   overflow: hidden;
   height: 100%;
 }
 
-  .body--is-shown-statement .statement {
+  body.is-shown-statement .statement {
     display: block;
   }
 

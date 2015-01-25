@@ -22,11 +22,11 @@ class LoremClipboard
         originalHtml = $copyBtn.html()
         $copyBtn
         .text "Copied!"
-        .addClass("meta-button--is-focus")
+        .addClass("is-focus")
         setTimeout =>
           $copyBtn
           .html originalHtml
-          .removeClass("meta-button--is-focus")
+          .removeClass("is-focus")
         , 2000
 
       elem = $(e.target)
