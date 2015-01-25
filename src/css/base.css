@@ -1,0 +1,80 @@
+/* Base */
+
+html {
+  color: #222;
+  font-size: 1em;
+  line-height: 1.4;
+}
+
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+    vertical-align: middle;
+}
+
+textarea {
+    resize: vertical;
+}
+
+
+/* Hide everything while loading fonts */
+
+.wf-loading {
+  visibility: hidden;
+}
+
+
+
+
+/* Layout */
+
+.app {
+  padding: 2rem;
+}
+
+
+/* Main Column */
+
+.content {
+  font-size: 1.25rem;
+  font-family: "ff-tisa-web-pro", serif;
+  margin: 0 auto 22rem;
+  max-width: 35rem;
+  vertical-align: top;
+}
+
+  .content p:first-child {
+    margin-top: 0;
+  }
+
+
+/* Media */
+
+@media only screen and (max-width: 58em) {
+
+  html {
+    font-size: .9em;
+  }
+
+}
+
+@media only screen and (max-height: 700px) {
+
+  html {
+    font-size: .9em;
+  }
+
+}

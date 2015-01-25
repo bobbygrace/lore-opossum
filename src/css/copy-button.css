@@ -1,0 +1,52 @@
+/* Copy Button */
+
+.copy-button {
+  background-color: hsl(0, 0%, 98%);
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
+  margin: 0 auto .4rem;
+  max-width: 300px;
+  outline: none;
+  padding: .4rem .8rem;
+  position: fixed;
+  right: 2em;
+  text-align: center;
+  text-decoration: none;
+  top: 2em;
+  -webkit-transition: background-color .1s;
+  transition: background-color .1s;
+}
+
+  .copy-button-text {
+    text-decoration: underline;
+    display: block;
+  }
+
+  .copy-button-meta {
+    font-size: .9em;
+  }
+
+
+/* State */
+/* Special classes for ZeroClipboard’s flash element */
+
+.copy-button.is-focus,
+.copy-button.zeroclipboard-is-hover {
+  background-color: hsl(120, 20%, 95%);
+}
+
+.copy-button.zeroclipboard-is-active {
+  background-color: hsl(120, 10%, 90%);
+}
+
+
+/* Media */
+
+@media only screen and (max-width: 58em) {
+
+  .copy-button {
+    display: none;
+  }
+
+}

@@ -6,7 +6,14 @@ minifyHTML = require "gulp-minify-html"
 
 gulpCssSrc = [
   "src/css/normalize.css"
-  "src/css/main.css"
+  "src/css/base.css"
+  "src/css/typography.css"
+  "src/css/meta.css"
+  "src/css/copy-button.css"
+  "src/css/clipboard.css"
+  "src/css/statement.css"
+  "src/css/util.css"
+  "src/css/print.css"
 ]
 
 gulp.task "css", ->

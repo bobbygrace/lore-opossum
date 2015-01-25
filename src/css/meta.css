@@ -1,0 +1,128 @@
+/* Meta */
+
+.meta {
+  background: linear-gradient(
+    hsla(0, 0%, 100%, 0) 0%,
+    hsla(0, 0%, 100%, 0.95) 15%,
+    hsla(0, 0%, 100%, 1) 30%
+  );
+  bottom: 0;
+  display: block;
+  left: 0;
+  padding: 3em 2em 1em;
+  position: fixed;
+  right: 0;
+  text-align: center;
+}
+
+  .meta-control {
+    display: inline-block;
+    margin: 0 1em .4em;
+    vertical-align: top;
+    text-align: left;
+    max-width: 250px;
+  }
+
+    .meta-control-header {
+      font-size: 1rem;
+      font-weight: normal;
+      margin: 0 0 0.4rem;
+    }
+
+    .meta-control-options {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+      .meta-control-options-item {
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 0 .3rem .4rem 0;
+        vertical-align: top;
+        width: 50%;
+      }
+
+        .meta-control-options-item-link {
+          background-color: hsl(120, 0%, 95%);
+          border-radius: 4px;
+          box-sizing: border-box;
+          display: block;
+          margin: 0;
+          padding: .4rem .7rem;
+          box-shadow: 0 1px 0 hsla(0, 0%, 0%, .2);
+          outline: none;
+          text-decoration: none;
+          -webkit-transition: background-color .1s;
+          transition: background-color .1s;
+        }
+
+          .meta-control-options-item-link:hover,
+          .meta-control-options-item-link:focus {
+            background-color: hsl(120, 15%, 90%);
+            box-shadow: 0 1px 0 hsla(0, 0%, 0%, .25);
+          }
+
+          .meta-control-options-item-link:active {
+            background-color: hsl(120, 20%, 86%);
+          }
+
+
+/* Modifiers */
+
+.meta-control.mod-flavor {
+  max-width: 390px;
+}
+
+  .meta-control.mod-flavor .meta-control-options-item {
+    width: 33%;
+  }
+
+.meta-control.mod-paragraphs {
+  max-width: 190px;
+}
+
+  .meta-control.mod-paragraphs .meta-control-options-item {
+    text-align: center;
+    width: 25%;
+  }
+
+.meta-control.mod-format {
+  max-width: 150px;
+}
+
+  .meta-control.mod-format .meta-control-options-item {
+    text-align: center;
+    width: 50%;
+  }
+
+
+/* State */ 
+
+.meta-control-options-item-link.is-current,
+.meta-control-options-item-link.is-current:hover,
+.meta-control-options-item-link.is-current:active {
+  background-color: hsl(120, 40%, 85%);
+  box-shadow: 0 1px 0 hsl(120, 40%, 55%);
+  cursor: default;
+}
+
+  .meta-control-options-item-link.is-current:focus {
+    background-color: hsl(120, 40%, 90%);
+    box-shadow: 0 1px 0 hsl(120, 40%, 65%);
+  }
+
+
+/* Media */
+
+@media only screen and (max-width: 58em) {
+
+  .meta {
+    padding-top: 1em;
+  }
+
+  .meta-control {
+    display: none;
+  }
+
+}

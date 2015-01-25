@@ -1,0 +1,57 @@
+/* Typography */
+/* http://modularscale.com/scale/?px1=16&px2=&ra1=1.25 */
+
+body {
+  font-family: "ff-tisa-sans-web-pro", sans-serif;
+}
+
+h1 {
+  font-size: 1.56rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+h4, h5, h6 {
+  font-size: 1rem;
+}
+
+.small,
+small {
+  font-size: .8rem;
+}
+
+a {
+  color: hsl(0, 0%, 20%);
+}
+
+  a:hover {
+    color: hsl(120, 50%, 0%);
+  }
+
+.quiet {
+  color: hsl(0, 0%, 55%);
+}
+
+  .quiet a {
+    color: hsl(0, 0%, 55%);
+  }
+
+  .quiet a:hover {
+    color: hsl(0, 0%, 20%);
+  }
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 2em 0;
+  padding: 0;
+}
+
