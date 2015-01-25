@@ -1,32 +1,19 @@
 /* Base */
 
 html {
-  color: #222;
+  color: hsl(0, 0%, 20%);
   font-size: 1em;
   line-height: 1.4;
 }
 
 ::-moz-selection {
-  background: #b3d4fc;
+  background-color: hsl(120, 15%, 90%);
   text-shadow: none;
 }
 
 ::selection {
-  background: #b3d4fc;
+  background-color: hsl(120, 15%, 90%);
   text-shadow: none;
-}
-
-audio,
-canvas,
-iframe,
-img,
-svg,
-video {
-    vertical-align: middle;
-}
-
-textarea {
-    resize: vertical;
 }
 
 
@@ -35,8 +22,6 @@ textarea {
 .wf-loading {
   visibility: hidden;
 }
-
-
 
 
 /* Layout */
