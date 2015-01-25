@@ -14,7 +14,7 @@ class AppView extends Backbone.View
 
   events:
     "click .js-select-flavor a": "selectFlavor"
-    "click .js-select-paragraphs a": "selectNumParagraphs"
+    "click .js-select-amount a": "selectAmount"
     "click .js-select-format a": "selectFormat"
     "click .js-copy-to-clipboard": "cancel"
     "click .js-open-statement": "openStatement"
@@ -25,14 +25,14 @@ class AppView extends Backbone.View
     @loremClipboard = new LoremClipboard()
     @listenTo @model, "change", @renderIpsum
     @listenTo @model, "change:flavor", @renderFlavors
-    @listenTo @model, "change:paragraphs", @renderNumParagraphs
+    @listenTo @model, "change:amount", @renderAmounts
     @listenTo @model, "change:format", @renderFormats
 
   render: ->
     @setElement $(".js-app") # :(
 
     @renderFlavors()
-    @renderNumParagraphs()
+    @renderAmounts()
     @renderFormats()
     @renderIpsum()
 
@@ -64,15 +64,6 @@ class AppView extends Backbone.View
     # Shortcuts c/o Combokeys
 
     combokeys = new Combokeys(document)
-
-    combokeys.bind "1", => @model.setParagraphs("1")
-    combokeys.bind "2", => @model.setParagraphs("2")
-    combokeys.bind "3", => @model.setParagraphs("3")
-    combokeys.bind "4", => @model.setParagraphs("4")
-    combokeys.bind "5", => @model.setParagraphs("5")
-    combokeys.bind "6", => @model.setParagraphs("6")
-    combokeys.bind "7", => @model.setParagraphs("7")
-    combokeys.bind "8", => @model.setParagraphs("8")
 
     combokeys.bind "t", => @model.setFormat("Text")
     combokeys.bind "h", => @model.setFormat("HTML")
@@ -106,28 +97,28 @@ class AppView extends Backbone.View
 
     @
 
-  renderNumParagraphs: ->
-    paragraphsRange = [1..8]
-    selectedNumParagraphs = Number @model.get("paragraphs")
+  renderAmounts: ->
+    amounts = ["Tiny", "Moderate", "Huge"]
+    selectedAmount = @model.get("amount")
 
-    getAttrs = (numPara) ->
+    getAttrs = (amount) ->
       classes = "meta-control-options-item-link"
-      if numPara == selectedNumParagraphs
+      if amount == selectedAmount
         classes += " is-current"
 
       return {
         "href": "#"
-        "data-paragraphs": numPara
+        "data-amount": amount
         "class": classes
       }
 
     html = render ->
-      for numPara in paragraphsRange
+      for amount in amounts
         li '.meta-control-options-item', ->
-          a getAttrs(numPara), ->
-            text numPara
+          a getAttrs(amount), ->
+            text amount
 
-    @$(".js-list-paragraphs").html html
+    @$(".js-list-amounts").html html
 
     @
 
@@ -159,7 +150,13 @@ class AppView extends Backbone.View
   renderIpsum: ->
     $ipsum = $(".js-render-ipsum")
     format = @model.get("format")
-    numParagraphs = @model.get("paragraphs")
+    amount = @model.get("amount")
+
+    numParagraphs = switch amount
+      when "Tiny" then "1"
+      when "Moderate" then "3"
+      when "Huge" then "8"
+
     paragraphs = (@generateParagraph() for para in [1..numParagraphs])
 
     switch format
@@ -224,10 +221,10 @@ class AppView extends Backbone.View
     @model.setFlavor(value)
     false
 
-  selectNumParagraphs: (e) ->
+  selectAmount: (e) ->
     e.preventDefault()
-    value = $(e.target).attr("data-paragraphs")
-    @model.setParagraphs(value)
+    value = $(e.target).attr("data-amount")
+    @model.setAmount(value)
     false
 
   selectFormat: (e) ->

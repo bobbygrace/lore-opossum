@@ -5,7 +5,7 @@ class LoremModel extends Backbone.Model
     ls = JSON.parse localStorage.getItem('settings')
     {
       flavor: ls?["flavor"] ? "Lorem Ipsum"
-      paragraphs: ls?["paragraphs"] ? 3
+      amount: ls?["amount"] ? "Moderate"
       format: ls?["format"] ? "Text"
     }
 
@@ -16,8 +16,8 @@ class LoremModel extends Backbone.Model
   setFlavor: (value) ->
     @set({flavor: value})
 
-  setParagraphs: (value) ->
-    @set({paragraphs: value})
+  setAmount: (value) ->
+    @set({amount: value})
 
   setFormat: (value) ->
     @set({format: value})

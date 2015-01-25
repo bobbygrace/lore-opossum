@@ -71,20 +71,20 @@
 /* Modifiers */
 
 .meta-control.mod-flavor {
-  max-width: 390px;
+  max-width: 380px;
 }
 
   .meta-control.mod-flavor .meta-control-options-item {
     width: 33%;
   }
 
-.meta-control.mod-paragraphs {
+.meta-control.mod-amount {
   max-width: 190px;
 }
 
-  .meta-control.mod-paragraphs .meta-control-options-item {
+  .meta-control.mod-amount .meta-control-options-item {
     text-align: center;
-    width: 25%;
+    width: 50%;
   }
 
 .meta-control.mod-format {
