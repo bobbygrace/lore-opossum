@@ -1,33 +1,30 @@
 {
   "name": "lore-opossum",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Lore Opossum is a content first lorem ipsum generator with many flavors.",
   "main": "index.coffee",
-  "scripts": {
-    "watch": "watchify  -t coffeeify index.coffee -o public/js/bundle.js --debug -v",
-    "build": "browserify -t coffeeify index.coffee | uglifyjs > public/js/bundle.js"
-  },
   "author": "Bobby Grace",
   "license": "MIT",
   "dependencies": {
     "backbone": "~1.1.2",
-    "zeroclipboard": "~2.1.6",
-    "underscore": "~1.7.0",
     "browserify": "~6.3.2",
-    "coffeeify": "~1.0.0",
-    "watchify": "~2.1.1",
-    "zeptojs": "~1.1.4",
-    "uglify-js": "~2.4.15",
-    "teacup": "~1.0.0",
-    "combokeys": "~2.0.0",
     "coffee-script": "~1.8.0",
+    "coffeeify": "~1.0.0",
+    "combokeys": "~2.0.0",
+    "config": "~1.9.0",
     "express": "~4.10.6",
-    "st": "~0.5.2",
-    "gulp-rename": "~1.2.0",
+    "gulp": "~3.8.10",
     "gulp-concat": "~2.4.3",
     "gulp-minify-css": "~0.3.11",
-    "gulp": "~3.8.10",
     "gulp-minify-html": "~0.1.8",
-    "config": "~1.9.0"
+    "gulp-rename": "~1.2.0",
+    "nodemon": "^1.8.1",
+    "st": "~0.5.2",
+    "teacup": "~1.0.0",
+    "uglifyify": "^3.0.1",
+    "underscore": "~1.7.0",
+    "watchify": "~2.1.1",
+    "zeptojs": "~1.1.4",
+    "zeroclipboard": "~2.1.6"
   }
 }
