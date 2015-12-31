@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+./node_modules/gulp/bin/gulp.js &
+./node_modules/browserify/bin/cmd.js \
+  -t [coffeeify --no-sourcemaps] \
+  -g [uglifyify --no-sourcemaps --compress --screw-ie8 --beautify=false] \
+  ./index.coffee -o ./public/js/bundle.js;

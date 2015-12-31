@@ -43,4 +43,5 @@ gulp.task "watch", ->
   gulp.watch gulpHtmlSrc, ["html"]
 
 
+gulp.task "dev", ["css", "html"]
 gulp.task "default", ["css", "html", "watch"]

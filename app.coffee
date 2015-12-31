@@ -21,3 +21,5 @@ mount = st mountOpts
 app.use(mount)
 
 http.listen(port)
+
+console.log "running at localhost:#{port}"
