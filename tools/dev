@@ -3,4 +3,4 @@
 ./node_modules/gulp/bin/gulp.js dev &
 ./node_modules/watchify/bin/cmd.js \
   -t [coffeeify] \
-  ./index.coffee -o ./public/js/bundle.js --debug -v;
+  ./src/coffeescript/entries/app.coffee -o ./public/js/bundle.js --debug -v;
