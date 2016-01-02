@@ -1,4 +1,4 @@
-$ = require 'zeptojs'
+$ = require 'jquery'
 _ = require 'underscore'
 
 isVisibleInput = (elem) ->
