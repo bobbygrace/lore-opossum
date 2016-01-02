@@ -4,7 +4,6 @@ Backbone        = require 'backbone'
 Backbone.$      = $
 zeroclipboard   = require 'zeroclipboard'
 flavors         = require './flavors.coffee'
-Combokeys       = require 'combokeys'
 LoremClipboard  = require './clipboard.coffee'
 { render, p, raw, br, text, li, ul, a } = require 'teacup'
 
@@ -27,6 +26,10 @@ class AppView extends Backbone.View
     @listenTo @model, "change:flavor", @renderFlavors
     @listenTo @model, "change:amount", @renderAmounts
     @listenTo @model, "change:format", @renderFormats
+
+    $(document).keydown (e) =>
+      if e.keyCode == 27
+        @closeStatement(e)
 
   render: ->
     @setElement $(".js-app") # :(
@@ -59,17 +62,6 @@ class AppView extends Backbone.View
 
     _.defer =>
       @$el.removeClass("hidden")
-
-
-    # Shortcuts c/o Combokeys
-
-    combokeys = new Combokeys(document)
-
-    combokeys.bind "t", => @model.setFormat("Text")
-    combokeys.bind "h", => @model.setFormat("HTML")
-    combokeys.bind "j", => @model.setFormat("JSON")
-
-    combokeys.bind "esc", => @closeStatement()
 
     @
 

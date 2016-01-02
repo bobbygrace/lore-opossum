@@ -7,7 +7,6 @@
   "dependencies": {
     "backbone": "~1.2.3",
     "coffee-script": "~1.10.0",
-    "combokeys": "~2.4.4",
     "config": "~1.17.1",
     "express": "~4.13.3",
     "jquery": "^2.1.4",
