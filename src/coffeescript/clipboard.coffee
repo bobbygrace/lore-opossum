@@ -23,7 +23,7 @@ class LoremClipboard
         $copyBtn
         .text "Copied!"
         .addClass("is-focus")
-        setTimeout =>
+        setTimeout ->
           $copyBtn
           .html originalHtml
           .removeClass("is-focus")
@@ -49,7 +49,6 @@ class LoremClipboard
         .val(@value)
         .appendTo($clipboardContainer)
         .focus()
-        # no select() in zepto. ¯\_(ツ)_/¯
         @$clipboardInput[0].select()
 
 

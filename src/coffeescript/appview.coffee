@@ -32,7 +32,7 @@ class AppView extends Backbone.View
         @closeStatement(e)
 
   render: ->
-    @setElement $(".js-app") # :(
+    @setElement $(".js-app")
 
     @renderFlavors()
     @renderAmounts()
@@ -229,7 +229,7 @@ class AppView extends Backbone.View
     $copyBtn = @$(".js-copy-to-clipboard")
     originalText = $copyBtn.html()
     $copyBtn.text "Copied!"
-    setTimeout =>
+    setTimeout ->
       $copyBtn.html originalText
     , 2000
 
