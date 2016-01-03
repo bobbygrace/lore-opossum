@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "backbone": "~1.2.3",
+    "clipboard": "^1.5.5",
     "coffee-script": "~1.10.0",
     "config": "~1.17.1",
     "express": "~4.13.3",
@@ -13,8 +14,7 @@
     "nodemon": "^1.8.1",
     "st": "~1.1.0",
     "teacup": "~2.0.0",
-    "underscore": "~1.8.3",
-    "zeroclipboard": "~2.2.0"
+    "underscore": "~1.8.3"
   },
   "devDependencies": {
     "browserify": "~12.0.1",

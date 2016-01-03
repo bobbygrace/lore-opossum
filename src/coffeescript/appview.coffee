@@ -2,12 +2,10 @@ $               = require 'jquery'
 _               = require 'underscore'
 Backbone        = require 'backbone'
 Backbone.$      = $
-zeroclipboard   = require 'zeroclipboard'
+Clipboard       = require 'clipboard'
 flavors         = require './flavors.coffee'
-LoremClipboard  = require './clipboard.coffee'
 { render, p, raw, br, text, li, ul, a } = require 'teacup'
 
-zeroclipboard.config( { swfPath: "swf/ZeroClipboard.swf" } )
 
 class AppView extends Backbone.View
 
@@ -15,21 +13,81 @@ class AppView extends Backbone.View
     "click .js-select-flavor a": "selectFlavor"
     "click .js-select-amount a": "selectAmount"
     "click .js-select-format a": "selectFormat"
-    "click .js-copy-to-clipboard": "cancel"
+
+    "click .js-copy-to-clipboard": "preventDefault"
+
     "click .js-open-statement": "openStatement"
     "click .js-close-statement": "closeStatement"
 
   initialize: ->
+    # http://stackoverflow.com/a/23522755
+    @isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+
     @fLoadedStatement = false
-    @loremClipboard = new LoremClipboard()
     @listenTo @model, "change", @renderIpsum
     @listenTo @model, "change:flavor", @renderFlavors
     @listenTo @model, "change:amount", @renderAmounts
     @listenTo @model, "change:format", @renderFormats
 
+    @clipboardTextValue = ''
+
+    # Clipboard.js stuff
+
+    @ClipboardClient = new Clipboard ".js-copy-to-clipboard", {
+      text: =>
+        @getClipboardTextValue()
+    }
+
+    @ClipboardClient.on "success", (e) =>
+      @flashCopiedState()
+
+    # Show "Ctrl" if not a Mac
+    if !/Mac|MacIntel|iPod|iPhone|iPad/.test(navigator.platform)
+      @$(".js-meta-key-type").text 'Ctrl'
+
+
+    # Only show Cmd+C if Safari
+
+    if @isSafari
+      $(".js-copy-to-clipboard").addClass 'hidden'
+      $(".js-copy-cmd-c-text").removeClass 'hidden'
+    else
+      $(".js-copy-to-clipboard").removeClass 'hidden'
+      $(".js-copy-cmd-c-text").addClass 'hidden'
+
+
+    # Shortcuts
+
     $(document).keydown (e) =>
+
+      # Close Statement
       if e.keyCode == 27
         @closeStatement(e)
+
+      # Clicked Control + C, copy to clipboard
+      else if e.keyCode == 67 && (e.ctrlKey || e.metaKey)
+        @flashCopiedState()
+
+        if window.getSelection?()?.toString()
+          return
+
+        if document.selection?.createRange().text
+          return
+
+      # Make a fake textarea and soak up the system's control + c shortcut
+      _.defer =>
+        $clipboardContainer = $(".js-lorem-clipboard")
+        $clipboardContainer.empty().show()
+        @$clipboardInput = $("<textarea class='lorem-clipboard-input js-lorem-clipboard-input'></textarea>")
+          .val(@getClipboardTextValue())
+          .appendTo($clipboardContainer)
+          .focus()
+        @$clipboardInput[0].select()
+
+    $(document).keyup (e) ->
+
+      if $(e.target).is(".js-lorem-clipboard-input")
+        $(".js-lorem-clipboard").empty().hide()
 
   render: ->
     @setElement $(".js-app")
@@ -38,27 +96,6 @@ class AppView extends Backbone.View
     @renderAmounts()
     @renderFormats()
     @renderIpsum()
-
-
-    # ZeroClipboard stuff
-
-    @zeroClipboardClient = new zeroclipboard(@$(".js-copy-to-clipboard"))
-
-    @zeroClipboardClient.on "error", (e) =>
-      @$(".js-copy-to-clipboard").addClass("hidden")
-
-    @zeroClipboardClient.on "ready", (e) =>
-      @$(".js-copy-to-clipboard").removeClass("hidden")
-
-    @zeroClipboardClient.on "copy", (e) =>
-      clipboard = e.clipboardData
-      clipboard.setData("text/plain", @loremClipboard.value)
-
-    @zeroClipboardClient.on "aftercopy", =>
-      @flashCopiedState()
-
-    if !/Mac|iPod|iPhone|iPad/.test(navigator.platform)
-      @$(".js-meta-key-type").text 'Ctrl'
 
     _.defer =>
       @$el.removeClass("hidden")
@@ -187,7 +224,7 @@ class AppView extends Backbone.View
 
     $ipsum.html html
 
-    @loremClipboard.set clipboard
+    @clipboardTextValue = clipboard
 
     @
 
@@ -226,11 +263,22 @@ class AppView extends Backbone.View
     false
 
   flashCopiedState: ->
-    $copyBtn = @$(".js-copy-to-clipboard")
+    selector = ".js-copy-to-clipboard"
+    if @isSafari
+      selector = ".js-copy-cmd-c-text"
+
+    $copyBtn = @$(selector)
+
     originalText = $copyBtn.html()
-    $copyBtn.text "Copied!"
+
+    $copyBtn
+      .addClass 'is-active'
+      .text "Copied!"
+
     setTimeout ->
-      $copyBtn.html originalText
+      $copyBtn
+        .html originalText
+        .removeClass 'is-active'
     , 2000
 
   openStatement: (e) ->
@@ -250,9 +298,11 @@ class AppView extends Backbone.View
     $("body").removeClass("is-shown-statement")
     false
 
-  cancel: (e) ->
+  getClipboardTextValue: ->
+    @clipboardTextValue
+
+  preventDefault: (e) ->
     e.preventDefault()
-    false
 
 
 module.exports = AppView

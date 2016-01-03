@@ -9,7 +9,7 @@
   margin: 0 auto .4rem;
   max-width: 300px;
   outline: none;
-  padding: .4rem .8rem;
+  padding: .4rem .6rem;
   position: fixed;
   right: 2em;
   text-align: center;
@@ -29,16 +29,24 @@
   }
 
 
-/* State */
-/* Special classes for ZeroClipboard’s flash element */
+/* Modifiers */
 
-.copy-button.is-focus,
-.copy-button.zeroclipboard-is-hover {
+.copy-button.mod-text-only {
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 60%);
+}
+
+
+/* State */
+
+.copy-button:not(.mod-text-only):hover {
   background-color: hsl(120, 20%, 95%);
 }
 
-.copy-button.zeroclipboard-is-active {
+.copy-button.is-active,
+.copy-button:active {
   background-color: hsl(120, 10%, 90%);
+  color: #333;
 }
 
 
