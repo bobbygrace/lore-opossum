@@ -2,7 +2,7 @@ gulp = require "gulp"
 concat = require "gulp-concat"
 minifyCSS = require "gulp-minify-css"
 rename = require "gulp-rename"
-minifyHTML = require "gulp-minify-html"
+htmlmin = require "gulp-htmlmin"
 
 gulpCssSrc = [
   "src/css/normalize.css"
@@ -30,11 +30,17 @@ gulp.task "css", ->
 gulpHtmlSrc = "./src/html/*.html"
 
 gulp.task "html", ->
-  options = {empty: true}
+  options =
+    removeComments: true
+    collapseWhitespace: true
+    removeAttributeQuotes: true
+    removeEmptyAttributes: true
+    minifyJS: true
+    minifyCSS: true
 
   gulp
     .src gulpHtmlSrc
-    .pipe minifyHTML(options)
+    .pipe htmlmin(options)
     .pipe gulp.dest("./public")
 
 
