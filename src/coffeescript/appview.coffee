@@ -112,14 +112,14 @@ class AppView extends Backbone.View
     selectedFlavor = @model.get("flavor")
 
     getAttrs = (flavor) ->
-      classes = "meta-control-options-item-link"
+      classes = ["meta-control-options-item-link"]
       if flavor == selectedFlavor
-        classes += " is-current"
+        classes.push "is-current"
 
       return {
         "href": "#"
         "data-flavor": flavor
-        "class": classes
+        "class": classes.join(" ")
       }
 
     html = render ->
@@ -137,14 +137,14 @@ class AppView extends Backbone.View
     selectedAmount = @model.get("amount")
 
     getAttrs = (amount) ->
-      classes = "meta-control-options-item-link"
+      classes = ["meta-control-options-item-link"]
       if amount == selectedAmount
-        classes += " is-current"
+        classes.push "is-current"
 
       return {
         "href": "#"
         "data-amount": amount
-        "class": classes
+        "class": classes.join(" ")
       }
 
     html = render ->
@@ -162,14 +162,14 @@ class AppView extends Backbone.View
     selectedFormat = @model.get("format")
 
     getAttrs = (format) ->
-      classes = "meta-control-options-item-link"
+      classes = ["meta-control-options-item-link"]
       if format == selectedFormat
-        classes += " is-current"
+        classes.push "is-current"
 
       return {
         "href": "#"
         "data-format": format
-        "class": classes
+        "class": classes.join(" ")
       }
 
     html = render ->
