@@ -230,7 +230,7 @@ class AppView extends Backbone.View
 
     $ipsum.html html
 
-    @clipboardTextValue = clipboard
+    @clipboardTextValue = clipboard.trim()
 
     @
 
