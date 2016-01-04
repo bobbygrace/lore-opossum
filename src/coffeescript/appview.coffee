@@ -5,7 +5,7 @@ Backbone.$      = $
 Clipboard       = require 'clipboard'
 flavors         = require './flavors.coffee'
 track           = require './analytics/track.coffee'
-{ render, p, raw, br, text, li, ul, a } = require 'teacup'
+{ render, p, raw, textarea, br, text, li, ul, a } = require 'teacup'
 
 
 class AppView extends Backbone.View
@@ -81,13 +81,14 @@ class AppView extends Backbone.View
 
       # Make a fake textarea and soak up the system's control + c shortcut
       _.defer =>
-        $clipboardContainer = $(".js-lorem-clipboard")
-        $clipboardContainer.empty().show()
-        @$clipboardInput = $("<textarea class='lorem-clipboard-input js-lorem-clipboard-input'></textarea>")
+        $clipboardContainer = $(".js-lorem-clipboard").empty().show()
+        clipboardInput = render ->
+          textarea '.lorem-clipboard-input.js-lorem-clipboard-input'
+        $clipboardInput = $(clipboardInput)
           .val(@getClipboardTextValue())
           .appendTo($clipboardContainer)
           .focus()
-        @$clipboardInput[0].select()
+        $clipboardInput[0].select()
 
     $(document).keyup (e) ->
 
