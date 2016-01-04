@@ -1,4 +1,4 @@
-$               = require 'jquery'
+$               = require 'zeptojs'
 _               = require 'underscore'
 Backbone        = require 'backbone'
 Backbone.$      = $
