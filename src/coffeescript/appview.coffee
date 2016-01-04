@@ -4,6 +4,7 @@ Backbone        = require 'backbone'
 Backbone.$      = $
 Clipboard       = require 'clipboard'
 flavors         = require './flavors.coffee'
+track           = require './analytics/track.coffee'
 { render, p, raw, br, text, li, ul, a } = require 'teacup'
 
 
@@ -16,6 +17,7 @@ class AppView extends Backbone.View
 
     "click .js-copy-to-clipboard": "preventDefault"
 
+    "click .js-bio": "openedBio"
     "click .js-open-statement": "openStatement"
     "click .js-close-statement": "closeStatement"
 
@@ -39,6 +41,7 @@ class AppView extends Backbone.View
     }
 
     @ClipboardClient.on "success", (e) =>
+      track('Copy', 'Clicked')
       @flashCopiedState()
 
     # Show "Ctrl" if not a Mac
@@ -66,7 +69,9 @@ class AppView extends Backbone.View
 
       # Clicked Control + C, copy to clipboard
       else if e.keyCode == 67 && (e.ctrlKey || e.metaKey)
+
         @flashCopiedState()
+        track('Copy', 'Cmd + C')
 
         if window.getSelection?()?.toString()
           return
@@ -248,18 +253,21 @@ class AppView extends Backbone.View
     e.preventDefault()
     value = $(e.target).attr("data-flavor")
     @model.setFlavor(value)
+    track('Select Flavor', value)
     false
 
   selectAmount: (e) ->
     e.preventDefault()
     value = $(e.target).attr("data-amount")
     @model.setAmount(value)
+    track('Select Amount', value)
     false
 
   selectFormat: (e) ->
     e.preventDefault()
     value = $(e.target).attr("data-format")
     @model.setFormat(value)
+    track('Select Format', value)
     false
 
   flashCopiedState: ->
@@ -291,15 +299,20 @@ class AppView extends Backbone.View
 
     $("body").addClass("is-shown-statement")
 
+    track('Statement', 'Opened')
     false
 
   closeStatement: (e) ->
     e?.preventDefault()
     $("body").removeClass("is-shown-statement")
+    track('Statement', 'Closed')
     false
 
   getClipboardTextValue: ->
     @clipboardTextValue
+
+  openedBio: (e) ->
+    track('Bio', 'Opened')
 
   preventDefault: (e) ->
     e.preventDefault()
