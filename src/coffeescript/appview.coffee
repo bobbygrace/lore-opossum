@@ -1,20 +1,28 @@
+# vendor
 $               = require 'zeptojs'
 Backbone        = require 'backbone'
 Backbone.$      = $
 Clipboard       = require 'clipboard'
-flavors         = require './flavors.coffee'
-track           = require './analytics/track.coffee'
 { render, p, raw, textarea, br, text, li, ul, a } = require 'teacup'
 
+# data
+flavors         = require './flavors.coffee'
+
+# utils
 getRandomSubarray = require './utils/getRandomSubarray.coffee'
 getRandomNumInRange = require './utils/getRandomNumInRange.coffee'
+getElem         = require './utils/getElem.coffee'
+
+# analytics
+track           = require './analytics/track.coffee'
+
 
 class AppView extends Backbone.View
 
   events:
-    "click .js-select-flavor a": "selectFlavor"
-    "click .js-select-amount a": "selectAmount"
-    "click .js-select-format a": "selectFormat"
+    "click .js-select-flavor": "selectFlavor"
+    "click .js-select-amount": "selectAmount"
+    "click .js-select-format": "selectFormat"
 
     "click .js-copy-to-clipboard": "preventDefault"
 
@@ -82,20 +90,26 @@ class AppView extends Backbone.View
 
       # Make a fake textarea and soak up the system's control + c shortcut
       setTimeout =>
-        $clipboardContainer = $(".js-lorem-clipboard").empty().show()
+        clipboardContainer = getElem("js-lorem-clipboard")
+        clipboardContainer.innerHTML = ''
+        clipboardContainer.style.display = 'block'
+
+        val = @getClipboardTextValue()
         clipboardInput = render ->
-          textarea '.lorem-clipboard-input.js-lorem-clipboard-input'
-        $clipboardInput = $(clipboardInput)
-          .val(@getClipboardTextValue())
-          .appendTo($clipboardContainer)
-          .focus()
-        $clipboardInput[0].select()
+          textarea '.lorem-clipboard-input.js-lorem-clipboard-input', val
+
+        clipboardContainer.innerHTML = clipboardInput
+
+        input = getElem("js-lorem-clipboard-input")
+        input.focus()
+        input.select()
+
       , 0
 
     $(document).keyup (e) ->
-
-      if $(e.target).is(".js-lorem-clipboard-input")
-        $(".js-lorem-clipboard").empty().hide()
+      clipboardContainer = getElem("js-lorem-clipboard")
+      clipboardContainer.innerHTML = ''
+      clipboardContainer.style.display = 'none'
 
   render: ->
     @setElement $(".js-app")
@@ -105,8 +119,8 @@ class AppView extends Backbone.View
     @renderFormats()
     @renderPlaceholder()
 
-    setTimeout =>
-      @$el.removeClass("hidden")
+    setTimeout ->
+      getElem('js-app').classList.remove("hidden")
     , 0
 
     @
@@ -115,7 +129,7 @@ class AppView extends Backbone.View
     selectedFlavor = @model.get("flavor")
 
     getAttrs = (flavor) ->
-      classes = ["meta-control-options-item-link"]
+      classes = ["meta-control-options-item-link js-select-flavor"]
       if flavor == selectedFlavor
         classes.push "is-current"
 
@@ -131,7 +145,7 @@ class AppView extends Backbone.View
           a getAttrs(flavor), ->
             text flavor
 
-    @$(".js-list-flavors").html html
+    getElem('js-list-flavors').innerHTML = html
 
     @
 
@@ -140,7 +154,7 @@ class AppView extends Backbone.View
     selectedAmount = @model.get("amount")
 
     getAttrs = (amount) ->
-      classes = ["meta-control-options-item-link"]
+      classes = ["meta-control-options-item-link js-select-amount"]
       if amount == selectedAmount
         classes.push "is-current"
 
@@ -156,7 +170,7 @@ class AppView extends Backbone.View
           a getAttrs(amount), ->
             text amount
 
-    @$(".js-list-amounts").html html
+    getElem('js-list-amounts').innerHTML = html
 
     @
 
@@ -165,7 +179,7 @@ class AppView extends Backbone.View
     selectedFormat = @model.get("format")
 
     getAttrs = (format) ->
-      classes = ["meta-control-options-item-link"]
+      classes = ["meta-control-options-item-link js-select-format"]
       if format == selectedFormat
         classes.push "is-current"
 
@@ -181,7 +195,7 @@ class AppView extends Backbone.View
           a getAttrs(format), ->
             text format
 
-    @$(".js-list-formats").html html
+    getElem('js-list-formats').innerHTML = html
 
     @
 
@@ -228,7 +242,7 @@ class AppView extends Backbone.View
           for para in paragraphs
             raw "#{para}\n\n"
 
-    $(".js-render-ipsum").html html
+    getElem('js-render-ipsum').innerHTML = html
     @clipboardTextValue = clipboard.trim()
 
     @
@@ -249,60 +263,63 @@ class AppView extends Backbone.View
 
   selectFlavor: (e) ->
     e.preventDefault()
-    value = $(e.target).attr("data-flavor")
+    value = e.target.getAttribute("data-flavor")
     @model.setFlavor(value)
     track('Select Flavor', value)
     false
 
   selectAmount: (e) ->
     e.preventDefault()
-    value = $(e.target).attr("data-amount")
+    value = e.target.getAttribute("data-amount")
     @model.setAmount(value)
     track('Select Amount', value)
     false
 
   selectFormat: (e) ->
     e.preventDefault()
-    value = $(e.target).attr("data-format")
+    value = e.target.getAttribute("data-format")
     @model.setFormat(value)
     track('Select Format', value)
     false
 
   flashCopiedState: ->
-    selector = ".js-copy-to-clipboard"
+    className = "js-copy-to-clipboard"
     if @isSafari
-      selector = ".js-copy-cmd-c-text"
+      className = "js-copy-cmd-c-text"
 
-    $copyBtn = @$(selector)
+    copyBtn = getElem(className)
 
-    originalText = $copyBtn.html()
+    originalHTML = copyBtn.innerHTML
 
-    $copyBtn
-      .addClass 'is-active'
-      .text "Copied!"
+    copyBtn.classList.add 'is-active'
+    copyBtn.innerHTML = "Copied!"
 
     setTimeout ->
-      $copyBtn
-        .html originalText
-        .removeClass 'is-active'
+      copyBtn.classList.remove 'is-active'
+      copyBtn.innerHTML = originalHTML
     , 2000
 
   openStatement: (e) ->
     e.preventDefault()
 
     if !@fLoadedStatement
-      $.get "/statement.html", (data) =>
-        @fLoadedStatement = true
-        @$(".js-statement").html data
+      request = new XMLHttpRequest()
+      request.open('GET', '/statement.html', true)
+      request.onload = =>
+        if (request.status >= 200 && request.status < 400)
+          @fLoadedStatement = true
+          getElem("js-statement").innerHTML = request.responseText
+      request.onerror = -> return
+      request.send()
 
-    $("body").addClass("is-shown-statement")
+    document.body.classList.add "is-shown-statement"
 
     track('Statement', 'Opened')
     false
 
   closeStatement: (e) ->
     e?.preventDefault()
-    $("body").removeClass("is-shown-statement")
+    document.body.classList.remove "is-shown-statement"
     track('Statement', 'Closed')
     false
 
