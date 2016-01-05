@@ -13,7 +13,6 @@
     "nodemon": "^1.8.1",
     "st": "~1.1.0",
     "teacup": "~2.0.0",
-    "underscore": "~1.8.3",
     "zeptojs": "~1.1.4"
   },
   "devDependencies": {

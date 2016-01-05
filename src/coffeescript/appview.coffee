@@ -1,5 +1,4 @@
 $               = require 'zeptojs'
-_               = require 'underscore'
 Backbone        = require 'backbone'
 Backbone.$      = $
 Clipboard       = require 'clipboard'
@@ -7,6 +6,8 @@ flavors         = require './flavors.coffee'
 track           = require './analytics/track.coffee'
 { render, p, raw, textarea, br, text, li, ul, a } = require 'teacup'
 
+getRandomSubarray = require './utils/getRandomSubarray.coffee'
+getRandomNumInRange = require './utils/getRandomNumInRange.coffee'
 
 class AppView extends Backbone.View
 
@@ -26,7 +27,7 @@ class AppView extends Backbone.View
     @isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
     @fLoadedStatement = false
-    @listenTo @model, "change", @renderIpsum
+    @listenTo @model, "change", @renderPlaceholder
     @listenTo @model, "change:flavor", @renderFlavors
     @listenTo @model, "change:amount", @renderAmounts
     @listenTo @model, "change:format", @renderFormats
@@ -80,7 +81,7 @@ class AppView extends Backbone.View
           return
 
       # Make a fake textarea and soak up the system's control + c shortcut
-      _.defer =>
+      setTimeout =>
         $clipboardContainer = $(".js-lorem-clipboard").empty().show()
         clipboardInput = render ->
           textarea '.lorem-clipboard-input.js-lorem-clipboard-input'
@@ -89,6 +90,7 @@ class AppView extends Backbone.View
           .appendTo($clipboardContainer)
           .focus()
         $clipboardInput[0].select()
+      , 0
 
     $(document).keyup (e) ->
 
@@ -101,10 +103,11 @@ class AppView extends Backbone.View
     @renderFlavors()
     @renderAmounts()
     @renderFormats()
-    @renderIpsum()
+    @renderPlaceholder()
 
-    _.defer =>
+    setTimeout =>
       @$el.removeClass("hidden")
+    , 0
 
     @
 
@@ -182,8 +185,7 @@ class AppView extends Backbone.View
 
     @
 
-  renderIpsum: ->
-    $ipsum = $(".js-render-ipsum")
+  renderPlaceholder: ->
     format = @model.get("format")
     amount = @model.get("amount")
 
@@ -210,9 +212,7 @@ class AppView extends Backbone.View
         joinedParagraphs = paragraphs.join(",")
 
         html = render ->
-          text "["
-          text paragraphs
-          text "]"
+          text "[#{paragraphs}"
 
         clipboard = render ->
           text "["
@@ -228,26 +228,23 @@ class AppView extends Backbone.View
           for para in paragraphs
             raw "#{para}\n\n"
 
-    $ipsum.html html
-
+    $(".js-render-ipsum").html html
     @clipboardTextValue = clipboard.trim()
 
     @
 
   generateSentence: ->
     # The sentence should be somehwere between 6 and 10 words or phrases
-    lengthRange = [6..10]
-    length = _.sample lengthRange
+    length = getRandomNumInRange(6,10)
     flavor = @model.get("flavor")
-    wordArray = _.sample flavors[flavor], length
+    wordArray = getRandomSubarray flavors[flavor], length
     rawSentence = wordArray.join(" ")
     # Uppercase first letter and add a period.
     sentence = rawSentence.charAt(0).toUpperCase() + rawSentence.slice(1) + "."
 
   generateParagraph: ->
-    # The paragraph should be somehwere between 4 and 10 sentences.
-    lengthRange = [4..8]
-    length = _.sample lengthRange
+    # The paragraph should be somehwere between 4 and 8 sentences.
+    length = getRandomNumInRange(4,8)
     paragraph = (@generateSentence() for s in [0..length]).join(" ")
 
   selectFlavor: (e) ->
