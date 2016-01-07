@@ -12,6 +12,7 @@ flavors         = require './flavors.coffee'
 getRandomSubarray = require './utils/getRandomSubarray.coffee'
 getRandomNumInRange = require './utils/getRandomNumInRange.coffee'
 getElem         = require './utils/getElem.coffee'
+delegateClicks  = require './utils/delegateClicks.coffee'
 
 # analytics
 track           = require './analytics/track.coffee'
@@ -19,28 +20,17 @@ track           = require './analytics/track.coffee'
 
 class AppView extends Backbone.View
 
-  events:
-    "click .js-select-flavor": "selectFlavor"
-    "click .js-select-amount": "selectAmount"
-    "click .js-select-format": "selectFormat"
-
-    "click .js-copy-to-clipboard": "preventDefault"
-
-    "click .js-bio": "openedBio"
-    "click .js-open-statement": "openStatement"
-    "click .js-close-statement": "closeStatement"
-
   initialize: ->
+
     # http://stackoverflow.com/a/23522755
     @isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-
     @fLoadedStatement = false
+    @clipboardTextValue = ''
+
     @listenTo @model, "change", @renderPlaceholder
     @listenTo @model, "change:flavor", @renderFlavors
     @listenTo @model, "change:amount", @renderAmounts
     @listenTo @model, "change:format", @renderFormats
-
-    @clipboardTextValue = ''
 
     # Clipboard.js stuff
 
@@ -55,22 +45,22 @@ class AppView extends Backbone.View
 
     # Show "Ctrl" if not a Mac
     if !/Mac|MacIntel|iPod|iPhone|iPad/.test(navigator.platform)
-      @$(".js-meta-key-type").text 'Ctrl'
+      getElem("js-meta-key-type").innerText 'Ctrl'
 
 
     # Only show Cmd+C if Safari
 
     if @isSafari
-      $(".js-copy-to-clipboard").addClass 'hidden'
-      $(".js-copy-cmd-c-text").removeClass 'hidden'
+      getElem("js-copy-to-clipboard").classList.add 'hidden'
+      getElem("js-copy-cmd-c-text").classList.remove 'hidden'
     else
-      $(".js-copy-to-clipboard").removeClass 'hidden'
-      $(".js-copy-cmd-c-text").addClass 'hidden'
+      getElem("js-copy-to-clipboard").classList.remove 'hidden'
+      getElem("js-copy-cmd-c-text").classList.add 'hidden'
 
 
     # Shortcuts
 
-    $(document).keydown (e) =>
+    document.addEventListener 'keydown', (e) =>
 
       # Close Statement
       if e.keyCode == 27
@@ -106,14 +96,12 @@ class AppView extends Backbone.View
 
       , 0
 
-    $(document).keyup (e) ->
+    document.addEventListener 'keyup', (e) ->
       clipboardContainer = getElem("js-lorem-clipboard")
       clipboardContainer.innerHTML = ''
       clipboardContainer.style.display = 'none'
 
   render: ->
-    @setElement $(".js-app")
-
     @renderFlavors()
     @renderAmounts()
     @renderFormats()
@@ -122,6 +110,16 @@ class AppView extends Backbone.View
     setTimeout ->
       getElem('js-app').classList.remove("hidden")
     , 0
+
+    # Events
+    getElem('js-copy-to-clipboard').addEventListener 'click', (e) ->
+      e.preventDefault()
+
+    getElem('js-bio').addEventListener 'click', (e) ->
+      track('Bio', 'Opened')
+
+    getElem('js-open-statement').addEventListener 'click', (e) =>
+      @openStatement(e)
 
     @
 
@@ -146,6 +144,7 @@ class AppView extends Backbone.View
             text flavor
 
     getElem('js-list-flavors').innerHTML = html
+    delegateClicks('js-select-flavor', @selectFlavor.bind(@))
 
     @
 
@@ -171,6 +170,7 @@ class AppView extends Backbone.View
             text amount
 
     getElem('js-list-amounts').innerHTML = html
+    delegateClicks('js-select-amount', @selectAmount.bind(@))
 
     @
 
@@ -196,6 +196,7 @@ class AppView extends Backbone.View
             text format
 
     getElem('js-list-formats').innerHTML = html
+    delegateClicks('js-select-format', @selectFormat.bind(@))
 
     @
 
@@ -309,6 +310,11 @@ class AppView extends Backbone.View
         if (request.status >= 200 && request.status < 400)
           @fLoadedStatement = true
           getElem("js-statement").innerHTML = request.responseText
+
+          # Events
+          getElem('js-close-statement').addEventListener 'click', (e) =>
+            @closeStatement(e)
+
       request.onerror = -> return
       request.send()
 
@@ -325,12 +331,5 @@ class AppView extends Backbone.View
 
   getClipboardTextValue: ->
     @clipboardTextValue
-
-  openedBio: (e) ->
-    track('Bio', 'Opened')
-
-  preventDefault: (e) ->
-    e.preventDefault()
-
 
 module.exports = AppView
