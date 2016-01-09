@@ -1,4 +1,4 @@
-flavors =
+module.exports =
   "Lorem Ipsum": [
     'lorem'
     'ipsum'
@@ -281,5 +281,3 @@ flavors =
     "</html>"
     "<img src='/' width='500' height='300'>"
   ]
-
-module.exports = flavors

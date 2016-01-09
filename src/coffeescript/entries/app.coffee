@@ -1,4 +1,5 @@
-AppView      = require '../appview.coffee'
-LoremModel   = require '../model.coffee'
+AppView = require '../appview.coffee'
+AppState = require '../appstate.coffee'
 
-new AppView({model: new LoremModel}).render()
+state = new AppState()
+new AppView({ state }).render()

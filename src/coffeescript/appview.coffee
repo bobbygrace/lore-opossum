@@ -1,36 +1,37 @@
 # vendor
-$               = require 'zeptojs'
-Backbone        = require 'backbone'
-Backbone.$      = $
-Clipboard       = require 'clipboard'
+Clipboard = require 'clipboard'
 { render, p, raw, textarea, br, text, li, ul, a } = require 'teacup'
-
-# data
-flavors         = require './flavors.coffee'
 
 # utils
 getRandomSubarray = require './utils/getRandomSubarray.coffee'
 getRandomNumInRange = require './utils/getRandomNumInRange.coffee'
-getElem         = require './utils/getElem.coffee'
-delegateClicks  = require './utils/delegateClicks.coffee'
+getElem = require './utils/getElem.coffee'
+delegateClicks = require './utils/delegateClicks.coffee'
 
 # analytics
-track           = require './analytics/track.coffee'
+track = require './analytics/track.coffee'
+
+# data
+flavors = require './data/flavors.coffee'
+amounts = require './data/amounts.coffee'
+formats = require './data/formats.coffee'
 
 
-class AppView extends Backbone.View
-
-  initialize: ->
+class AppView
+  constructor: (opts) ->
+    @state = opts.state
 
     # http://stackoverflow.com/a/23522755
     @isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
     @fLoadedStatement = false
     @clipboardTextValue = ''
 
-    @listenTo @model, "change", @renderPlaceholder
-    @listenTo @model, "change:flavor", @renderFlavors
-    @listenTo @model, "change:amount", @renderAmounts
-    @listenTo @model, "change:format", @renderFormats
+    @state.on 'change', (key, value) =>
+      switch key
+        when 'flavor' then @renderFlavors()
+        when 'amount' then @renderAmounts()
+        when 'format' then @renderFormats()
+      @renderPlaceholder()
 
     # Clipboard.js stuff
 
@@ -101,6 +102,9 @@ class AppView extends Backbone.View
       clipboardContainer.innerHTML = ''
       clipboardContainer.style.display = 'none'
 
+  getFlavorWords: (flavor) ->
+    flavors[flavor]
+
   render: ->
     @renderFlavors()
     @renderAmounts()
@@ -124,7 +128,7 @@ class AppView extends Backbone.View
     @
 
   renderFlavors: ->
-    selectedFlavor = @model.get("flavor")
+    selectedFlavor = @state.get("flavor")
 
     getAttrs = (flavor) ->
       classes = ["meta-control-options-item-link js-select-flavor"]
@@ -149,25 +153,28 @@ class AppView extends Backbone.View
     @
 
   renderAmounts: ->
-    amounts = ["Tiny", "Moderate", "Huge"]
-    selectedAmount = @model.get("amount")
+    selectedAmount = @state.get("amount")
 
-    getAttrs = (amount) ->
+    amountNames = []
+    for name, data of amounts
+      amountNames.push name
+
+    getAttrs = (name) ->
       classes = ["meta-control-options-item-link js-select-amount"]
-      if amount == selectedAmount
+      if name == selectedAmount
         classes.push "is-current"
 
       return {
         "href": "#"
-        "data-amount": amount
+        "data-amount": name
         "class": classes.join(" ")
       }
 
     html = render ->
-      for amount in amounts
+      for name in amountNames
         li '.meta-control-options-item', ->
-          a getAttrs(amount), ->
-            text amount
+          a getAttrs(name), ->
+            text name
 
     getElem('js-list-amounts').innerHTML = html
     delegateClicks('js-select-amount', @selectAmount.bind(@))
@@ -175,8 +182,7 @@ class AppView extends Backbone.View
     @
 
   renderFormats: ->
-    formats = ["Text", "HTML", "JSON"]
-    selectedFormat = @model.get("format")
+    selectedFormat = @state.get("format")
 
     getAttrs = (format) ->
       classes = ["meta-control-options-item-link js-select-format"]
@@ -201,13 +207,10 @@ class AppView extends Backbone.View
     @
 
   renderPlaceholder: ->
-    format = @model.get("format")
-    amount = @model.get("amount")
+    format = @state.get("format")
+    amount = @state.get("amount")
 
-    numParagraphs = switch amount
-      when "Tiny" then "1"
-      when "Moderate" then "3"
-      when "Huge" then "8"
+    numParagraphs = amounts[amount].num
 
     paragraphs = (@generateParagraph() for para in [1..numParagraphs])
 
@@ -251,8 +254,8 @@ class AppView extends Backbone.View
   generateSentence: ->
     # The sentence should be somehwere between 6 and 10 words or phrases
     length = getRandomNumInRange(6,10)
-    flavor = @model.get("flavor")
-    wordArray = getRandomSubarray flavors[flavor], length
+    flavor = @state.get('flavor')
+    wordArray = getRandomSubarray @getFlavorWords(flavor), length
     rawSentence = wordArray.join(" ")
     # Uppercase first letter and add a period.
     sentence = rawSentence.charAt(0).toUpperCase() + rawSentence.slice(1) + "."
@@ -265,21 +268,21 @@ class AppView extends Backbone.View
   selectFlavor: (e) ->
     e.preventDefault()
     value = e.target.getAttribute("data-flavor")
-    @model.setFlavor(value)
+    @state.setFlavor(value)
     track('Select Flavor', value)
     false
 
   selectAmount: (e) ->
     e.preventDefault()
     value = e.target.getAttribute("data-amount")
-    @model.setAmount(value)
+    @state.setAmount(value)
     track('Select Amount', value)
     false
 
   selectFormat: (e) ->
     e.preventDefault()
     value = e.target.getAttribute("data-format")
-    @model.setFormat(value)
+    @state.setFormat(value)
     track('Select Format', value)
     false
 
