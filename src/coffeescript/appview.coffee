@@ -339,20 +339,28 @@ class AppView
     false
 
   flashCopiedState: ->
+    # TODO: clean up this disaster. Too much DOM manipulation and state.
+    # Should add an idempotent renderCopyButton method.
+
     className = "js-copy-to-clipboard"
     if @isSafari
       className = "js-copy-cmd-c-text"
 
     copyBtn = getElem(className)
 
-    originalHTML = copyBtn.innerHTML
+    if @copiedTimerId?
+      clearTimeout @copiedTimerId
+      copyBtn.classList.remove 'is-active'
+      copyBtn.innerHTML = @originalCopyBtnHTML
+
+    @originalCopyBtnHTML = copyBtn.innerHTML
 
     copyBtn.classList.add 'is-active'
     copyBtn.innerHTML = "Copied!"
 
-    setTimeout ->
+    @copiedTimerId = setTimeout =>
       copyBtn.classList.remove 'is-active'
-      copyBtn.innerHTML = originalHTML
+      copyBtn.innerHTML = @originalCopyBtnHTML
     , 2000
 
   openStatement: (e) ->
