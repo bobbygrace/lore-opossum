@@ -67,20 +67,24 @@ class AppView
       # Close Statement
       if e.keyCode == 27
         @closeStatement(e)
+        return
 
-      # Clicked Control + C, copy to clipboard
-      else if e.keyCode == 67 && (e.ctrlKey || e.metaKey)
 
+      # Control + C stuff…
+
+      # User hit control or command + C and copied the text. Let them know!
+      if (e.ctrlKey || e.metaKey) && e.keyCode == 67
         @flashCopiedState()
         track('Copy', 'Cmd + C')
+        return
 
-        if window.getSelection?()?.toString()
-          return
+      # If the user is already selecting something, stop here. Otherwise, we’ll
+      # lose their focus with the new textarea.
+      return if window.getSelection?()?.toString() ?
+        document.selection?.createRange().text
 
-        if document.selection?.createRange().text
-          return
-
-      # Make a fake textarea and soak up the system's control + c shortcut
+      # Make a fake textarea with the clipboard text and focus it. It will soak
+      # up the system's control + c shortcut.
       setTimeout =>
         clipboardContainer = getElem("js-lorem-clipboard")
         clipboardContainer.innerHTML = ''
