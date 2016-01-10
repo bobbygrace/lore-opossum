@@ -249,16 +249,6 @@ module.exports =
     "drop in"
     "body varial"
   ]
-  "Hodor": [
-    "hodor"
-    "hodor"
-    "hodor"
-    "hodor"
-    "hodor"
-    "hodor"
-    "HODOR"
-    "Hodor"
-  ]
   "Redacted": [
     "█"
     "█"
@@ -281,3 +271,4 @@ module.exports =
     "</html>"
     "<img src='/' width='500' height='300'>"
   ]
+  "Custom": []

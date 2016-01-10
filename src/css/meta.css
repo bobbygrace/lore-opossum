@@ -52,6 +52,7 @@
           padding: .4rem .7rem;
           box-shadow: 0 1px 0 hsla(0, 0%, 0%, .2);
           outline: none;
+          position: relative;
           text-decoration: none;
           -webkit-transition: background-color .1s;
           transition: background-color .1s;
@@ -67,6 +68,18 @@
             background-color: hsl(120, 20%, 86%);
           }
 
+        .meta-control-options-item-link-option {
+          border-radius: 2px;
+          cursor: pointer;
+          padding: .4rem 10px;
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+
+          .meta-control-options-item-link-option:hover {
+            background-color: hsla(0, 0%, 0%, 0.1);
+          }
 
 /* Modifiers */
 
@@ -97,7 +110,7 @@
   }
 
 
-/* State */ 
+/* State */
 
 .meta-control-options-item-link.is-current,
 .meta-control-options-item-link.is-current:hover,

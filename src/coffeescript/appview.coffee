@@ -1,9 +1,10 @@
 # vendor
 Clipboard = require 'clipboard'
-{ render, p, raw, textarea, br, text, li, ul, a } = require 'teacup'
+{ render, p, raw, textarea, br, text, li, ul, a, span } = require 'teacup'
 
 # utils
 getRandomSubarray = require './utils/getRandomSubarray.coffee'
+randomizedArrayCycler = require './utils/randomizedArrayCycler.coffee'
 getRandomNumInRange = require './utils/getRandomNumInRange.coffee'
 getElem = require './utils/getElem.coffee'
 delegateClicks = require './utils/delegateClicks.coffee'
@@ -102,12 +103,21 @@ class AppView
       clipboardContainer.innerHTML = ''
       clipboardContainer.style.display = 'none'
 
+  getClipboardTextValue: ->
+    @clipboardTextValue
+
+  getCustomWords: ->
+    JSON.parse(localStorage.getItem('customwords')) ? []
+
   getFlavorWords: (flavor) ->
     defaultFlavor = @state.defaults.flavor
 
     if !flavor || !flavors[flavor]
       @state.set('flavor', defaultFlavor)
       return flavors[defaultFlavor]
+
+    if flavor == "Custom"
+      return @getCustomWords()
 
     flavors[flavor]
 
@@ -152,9 +162,16 @@ class AppView
         li '.meta-control-options-item', ->
           a getAttrs(flavor), ->
             text flavor
+            if flavor == "Custom"
+              span '.meta-control-options-item-link-option.js-edit-custom', ->
+                "✎"
 
     getElem('js-list-flavors').innerHTML = html
     delegateClicks('js-select-flavor', @selectFlavor.bind(@))
+
+    getElem('js-edit-custom').addEventListener 'click', (e) =>
+      e.preventDefault()
+      @promptForCustomWords()
 
     @
 
@@ -261,8 +278,9 @@ class AppView
     # The sentence should be somehwere between 6 and 10 words or phrases
     length = getRandomNumInRange(6,10)
     flavor = @state.get('flavor')
-    wordArray = getRandomSubarray @getFlavorWords(flavor), length
-    rawSentence = wordArray.join(" ")
+    words = @getFlavorWords(flavor)
+    cycler = randomizedArrayCycler(words)
+    rawSentence = (cycler() for s in [0..length]).join(" ")
     # Uppercase first letter and add a period.
     sentence = rawSentence.charAt(0).toUpperCase() + rawSentence.slice(1) + "."
 
@@ -271,10 +289,30 @@ class AppView
     length = getRandomNumInRange(4,8)
     paragraph = (@generateSentence() for s in [0..length]).join(" ")
 
+  promptForCustomWords: ->
+    pr = prompt("Enter some words.")
+    return if pr.trim() == ""
+
+    # truncate, strip punctuation, collapse whitespace, split on spaces
+    trunct = pr.substring(0, 10000)
+    punctless = trunct.replace(/[.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+    collapsed = punctless.replace(/\s{2,}/g," ")
+    wordArray = collapsed.split(" ")
+
+    # save and render
+    localStorage.setItem('customwords', JSON.stringify(wordArray))
+    @state.set('flavor', "Custom")
+    @renderPlaceholder()
+    return
+
   selectFlavor: (e) ->
     e.preventDefault()
     value = e.target.getAttribute("data-flavor")
     return if !value
+
+    # if they don't have any custom words yet, get some
+    if value == "Custom" && @getCustomWords().length == 0
+      @promptForCustomWords()
 
     @state.set('flavor', value)
     track('Select Flavor', value)
@@ -339,8 +377,5 @@ class AppView
     document.body.classList.remove "is-shown-statement"
     track('Statement', 'Closed')
     false
-
-  getClipboardTextValue: ->
-    @clipboardTextValue
 
 module.exports = AppView
