@@ -1,35 +1,32 @@
 Emitter = require 'tiny-emitter'
 
 module.exports = class AppState extends Emitter
-  constructor: ->
-    return if localStorage.getItem('settings')?
+  constructor: ({ @defaults, @location }) ->
+    # set the defaults
+    return if localStorage.getItem(@location)?
+    localStorage.setItem(@location, JSON.stringify(@defaults))
 
-    settings =
-      'flavor': "Lorem Ipsum"
-      'amount': "Moderate"
-      'format': "Text"
-    localStorage.setItem('settings', JSON.stringify(settings))
-
-  getStorage: ->
-    JSON.parse localStorage.getItem('settings')
+  _getStorage: ->
+    (JSON.parse localStorage.getItem(@location)) ? []
 
   get: (field) ->
-    @getStorage()[field]
+    value = @_getStorage()[field]
+
+    # fall back to default if we don't have a value
+    if !value
+      @set(field, @defaults[field])
+      return @defaults[field]
+
+    value
 
   set: (key, value) ->
-    ls = @getStorage()
+    ls = @_getStorage()
+
     # don't save/emit if the value is the same
     return if ls[key] == value
+
     ls[key] = value
-    localStorage.setItem('settings', JSON.stringify(ls))
+    localStorage.setItem(@location, JSON.stringify(ls))
+
     # let the world know
     @emit('change', key, value)
-
-  setFlavor: (value) ->
-    @set('flavor', value)
-
-  setAmount: (value) ->
-    @set('amount', value)
-
-  setFormat: (value) ->
-    @set('format', value)

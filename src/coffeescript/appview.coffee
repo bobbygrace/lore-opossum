@@ -103,6 +103,12 @@ class AppView
       clipboardContainer.style.display = 'none'
 
   getFlavorWords: (flavor) ->
+    defaultFlavor = @state.defaults.flavor
+
+    if !flavor || !flavors[flavor]
+      @state.set('flavor', defaultFlavor)
+      return flavors[defaultFlavor]
+
     flavors[flavor]
 
   render: ->
@@ -268,21 +274,23 @@ class AppView
   selectFlavor: (e) ->
     e.preventDefault()
     value = e.target.getAttribute("data-flavor")
-    @state.setFlavor(value)
+    return if !value
+
+    @state.set('flavor', value)
     track('Select Flavor', value)
     false
 
   selectAmount: (e) ->
     e.preventDefault()
     value = e.target.getAttribute("data-amount")
-    @state.setAmount(value)
+    @state.set('amount', value)
     track('Select Amount', value)
     false
 
   selectFormat: (e) ->
     e.preventDefault()
     value = e.target.getAttribute("data-format")
-    @state.setFormat(value)
+    @state.set('format', value)
     track('Select Format', value)
     false
 
