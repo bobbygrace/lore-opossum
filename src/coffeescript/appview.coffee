@@ -295,6 +295,8 @@ class AppView
 
   promptForCustomWords: ->
     pr = prompt("Enter some words.")
+
+    return if !pr
     return if pr.trim() == ""
 
     # truncate, strip punctuation, collapse whitespace, split on spaces
