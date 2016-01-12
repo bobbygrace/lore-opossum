@@ -257,7 +257,7 @@ class AppView
         joinedParagraphs = paragraphs.join(",")
 
         html = render ->
-          text "[#{paragraphs}"
+          text "[#{paragraphs}]"
 
         clipboard = render ->
           text "["
