@@ -3,7 +3,6 @@ AppState = require '../appstate.coffee'
 
 stateDefaults =
   'flavor': "Lorem Ipsum"
-  'amount': "Moderate"
   'format': "Text"
 
 stateLocation = 'settings'

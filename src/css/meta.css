@@ -84,24 +84,15 @@
 /* Modifiers */
 
 .meta-control.mod-flavor {
-  max-width: 380px;
+  max-width: 450px;
 }
 
   .meta-control.mod-flavor .meta-control-options-item {
     width: 33%;
   }
 
-.meta-control.mod-amount {
-  max-width: 190px;
-}
-
-  .meta-control.mod-amount .meta-control-options-item {
-    text-align: center;
-    width: 50%;
-  }
-
 .meta-control.mod-format {
-  max-width: 150px;
+  max-width: 200px;
 }
 
   .meta-control.mod-format .meta-control-options-item {

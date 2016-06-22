@@ -14,7 +14,6 @@ track = require './analytics/track.coffee'
 
 # data
 flavors = require './data/flavors.coffee'
-amounts = require './data/amounts.coffee'
 formats = require './data/formats.coffee'
 
 
@@ -30,7 +29,6 @@ class AppView
     @state.on 'change', (key, value) =>
       switch key
         when 'flavor' then @renderFlavors()
-        when 'amount' then @renderAmounts()
         when 'format' then @renderFormats()
       @renderPlaceholder()
 
@@ -127,7 +125,6 @@ class AppView
 
   render: ->
     @renderFlavors()
-    @renderAmounts()
     @renderFormats()
     @renderPlaceholder()
 
@@ -179,35 +176,6 @@ class AppView
 
     @
 
-  renderAmounts: ->
-    selectedAmount = @state.get("amount")
-
-    amountNames = []
-    for name, data of amounts
-      amountNames.push name
-
-    getAttrs = (name) ->
-      classes = ["meta-control-options-item-link js-select-amount"]
-      if name == selectedAmount
-        classes.push "is-current"
-
-      return {
-        "href": "#"
-        "data-amount": name
-        "class": classes.join(" ")
-      }
-
-    html = render ->
-      for name in amountNames
-        li '.meta-control-options-item', ->
-          a getAttrs(name), ->
-            text name
-
-    getElem('js-list-amounts').innerHTML = html
-    delegateClicks('js-select-amount', @selectAmount.bind(@))
-
-    @
-
   renderFormats: ->
     selectedFormat = @state.get("format")
 
@@ -235,9 +203,8 @@ class AppView
 
   renderPlaceholder: ->
     format = @state.get("format")
-    amount = @state.get("amount")
 
-    numParagraphs = amounts[amount].num
+    numParagraphs = 8
 
     paragraphs = (@generateParagraph() for para in [1..numParagraphs])
 
@@ -322,13 +289,6 @@ class AppView
 
     @state.set('flavor', value)
     track('Select Flavor', value)
-    false
-
-  selectAmount: (e) ->
-    e.preventDefault()
-    value = e.target.getAttribute("data-amount")
-    @state.set('amount', value)
-    track('Select Amount', value)
     false
 
   selectFormat: (e) ->
